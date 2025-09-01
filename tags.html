@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tags - Khushaank Gupta's personal homepage</title>
+    <meta charset="utf-8" />
+    <meta name="title" content="Tags - Khushaank Gupta" />
+    <meta name="description" content="Browse posts by tags" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="shortcut icon" href="assets/icon/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <base href="./" />
+    <style>
+      .tag-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-transform: capitalize;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="container wrap">
+      <div class="header">
+        <div class="logo">
+          <a href="index.html">
+            <img
+              src="assets/img/khush.png"
+              alt
+              class="photo"
+              draggable="false"
+            />
+          </a>
+          <a href="index.html" class="home-link">
+            <p class="Header-name">Khushaank Gupta</p>
+          </a>
+          <p class="tagline">Musings on finance, business, and life</p>
+        </div>
+        <nav class="nav">
+          <a class="active" href="index.html">Home</a>
+          <a href="blog.html">Musings</a>
+          <a href="#" class="feed-toggle">
+            <img
+              src="assets/svg/feed.svg"
+              alt="Click to change mode"
+              draggable="false"
+            />
+          </a>
+        </nav>
+      </div>
+
+      <div class="content">
+        <section class="page">
+          <div id="tag-title" class="tag-title"></div>
+          <div class="posts" id="posts"></div>
+        </section>
+      </div>
+    </section>
+    <footer class="footer">Khushaank Gupta &copy;2021 - 2025</footer>
+
+    <script>
+      function formatDate(iso) {
+        const d = new Date(iso);
+        const day = String(d.getDate()).padStart(2, "0");
+        const month = d.toLocaleString("en-US", { month: "short" });
+        const year = d.getFullYear();
+        return { day, monthYear: `${month} ${year}` };
+      }
+
+      async function load() {
+        const res = await fetch("posts.json");
+        const all = await res.json();
+
+        const hash = decodeURIComponent(location.hash.slice(1));
+        if (!hash) {
+          document.getElementById("tag-title").textContent = "No tag selected";
+          return;
+        }
+
+        // show tag as big title
+        document.getElementById("tag-title").textContent = hash;
+
+        const posts = all
+          .filter((p) =>
+            (p.tags || [])
+              .map((t) => t.toLowerCase())
+              .includes(hash.toLowerCase())
+          )
+          .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const postsEl = document.getElementById("posts");
+        postsEl.innerHTML = posts
+          .map((p) => {
+            const { day, monthYear } = formatDate(p.date);
+            return `
+            <div class="post">
+              <div class="date">
+                <span class="day">${day}</span>
+                <span class="year">${monthYear}</span>
+              </div>
+              <div class="body">
+                <h4 class="title">
+                  <a href="post.html?slug=${encodeURIComponent(p.slug)}">
+                    ${p.title}
+                  </a>
+                </h4>
+                <span class="domain">khushaankgupta.me</span>
+                <div class="description">${p.description}</div>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+      }
+
+      window.addEventListener("hashchange", load);
+      load();
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

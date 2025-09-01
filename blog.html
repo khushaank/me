@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator" content="Hugo 0.68.3" />
+    <title>
+      Khushaank Gupta's personal homepage - Musings on finance, business, and
+      life
+    </title>
+    <meta charset="utf-8" />
+    <meta name="title" content="Khushaank Gupta's personal homepage" />
+    <meta name="description" content="Musings on finance, business, and life" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      property="og:title"
+      content="Khushaank Gupta's personal homepage - Musings on finance, business, and life"
+    />
+    <meta
+      property="og:description"
+      content="Musings on finance, business, and life"
+    />
+    <meta property="og:type" content="website" />
+    <link rel="shortcut icon" href="assets/icon/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <base href="./" />
+  </head>
+  <body>
+    <section class="container wrap">
+      <div class="header">
+        <div class="logo">
+          <a href="index.html">
+            <img
+              src="assets/img/khush.png"
+              alt="me"
+              class="photo"
+              draggable="false"
+            />
+          </a>
+          <a href="index.html" class="home-link">
+            <p class="Header-name">Khushaank Gupta</p>
+          </a>
+          <p class="tagline">Musings on finance, business, and life</p>
+        </div>
+        <nav class="nav">
+          <a class="active" href="index.html">Home</a>
+          <a href="blog.html">Musings</a>
+          <a href="#" class="feed-toggle">
+            <img
+              src="assets/svg/feed.svg"
+              alt="Click to change mode"
+              draggable="false"
+            />
+          </a>
+        </nav>
+      </div>
+
+      <div class="content">
+        <section class="page">
+          <h3 class="title kind-section">Musings</h3>
+          <p>
+            An assorted collection of thoughts on music, sports, fitness, and
+            life.
+          </p>
+
+          <div class="posts" id="posts"></div>
+
+          <ul class="pagination" id="pagination"></ul>
+        </section>
+      </div>
+    </section>
+    <footer class="footer">Khushaank Gupta &copy;2021 - 2025</footer>
+
+    <script>
+      const postsPerPage = 5;
+
+      function formatDate(iso) {
+        const d = new Date(iso);
+        const day = String(d.getDate()).padStart(2, "0");
+        const month = d.toLocaleString("en-US", { month: "short" });
+        const year = d.getFullYear();
+        return { day, monthYear: `${month} ${year}` };
+      }
+
+      async function load() {
+        const res = await fetch("posts.json");
+        const all = await res.json();
+
+        // newest first
+        const posts = all.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const params = new URLSearchParams(location.search);
+        const page = Math.max(1, parseInt(params.get("page") || "1", 10));
+        const totalPages = Math.ceil(posts.length / postsPerPage);
+
+        const start = (page - 1) * postsPerPage;
+        const slice = posts.slice(start, start + postsPerPage);
+
+        const postsEl = document.getElementById("posts");
+        postsEl.innerHTML = slice
+          .map((p) => {
+            const { day, monthYear } = formatDate(p.date);
+            return `
+            <div class="post">
+              <div class="date">
+                <span class="day">${day}</span>
+                <span class="year">${monthYear}</span>
+              </div>
+              <div class="body">
+                <h4 class="title">
+                  <a href="post.html?slug=${encodeURIComponent(p.slug)}">
+                    ${p.title}
+                  </a>
+                </h4>
+                <span class="domain">khushaankgupta.me</span>
+                <div class="description">${p.description}</div>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+
+        const pag = document.getElementById("pagination");
+        function pageLink(p, label, disabled = false, active = false) {
+          if (disabled)
+            return `<li class="page-item disabled"><span class="page-link">${label}</span></li>`;
+          if (active)
+            return `<li class="page-item active"><a class="page-link" href="blog.html?page=${p}">${label}</a></li>`;
+          return `<li class="page-item"><a class="page-link" href="blog.html?page=${p}">${label}</a></li>`;
+        }
+
+        let html = "";
+        html += pageLink(1, "&#171;&#171;", page === 1);
+        html += pageLink(Math.max(1, page - 1), "&#171;", page === 1);
+
+        // show up to 7 page numbers centered around current
+        const windowSize = 7;
+        let from = Math.max(1, page - Math.floor(windowSize / 2));
+        let to = Math.min(totalPages, from + windowSize - 1);
+        from = Math.max(1, to - windowSize + 1);
+
+        for (let i = from; i <= to; i++) {
+          html += pageLink(i, i, false, i === page);
+        }
+
+        if (to < totalPages) {
+          html += `<li class="page-item disabled"><span aria-hidden="true">&nbsp;&mldr;&nbsp;</span></li>`;
+          html += pageLink(totalPages, totalPages);
+        }
+
+        html += pageLink(
+          Math.min(totalPages, page + 1),
+          "&#187;",
+          page === totalPages
+        );
+        html += pageLink(totalPages, "&#187;&#187;", page === totalPages);
+
+        pag.innerHTML = html;
+      }
+
+      load();
+    </script>
+    <script>
+      async function load() {
+        const res = await fetch("posts.json");
+        const all = await res.json();
+
+        // newest first
+        let posts = all.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        const params = new URLSearchParams(location.search);
+        const page = Math.max(1, parseInt(params.get("page") || "1", 10));
+        const tagFilter = params.get("tag");
+
+        if (tagFilter) {
+          posts = posts.filter((p) =>
+            (p.tags || [])
+              .map((t) => t.toLowerCase())
+              .includes(tagFilter.toLowerCase())
+          );
+        }
+      }
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

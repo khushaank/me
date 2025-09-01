@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Loading… - Khushaank Gupta's personal homepage</title>
+    <meta charset="utf-8" />
+    <meta name="title" content="Khushaank Gupta's personal homepage" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <link rel="shortcut icon" href="assets/icon/favicon.ico" />
+    <meta property="og:image" content="thumb.jpg" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <base href="./" />
+  </head>
+  <body>
+    <section class="container wrap">
+      <div class="header">
+        <div class="logo">
+          <a href="index.html"
+            ><img
+              src="assets/img/khush.png"
+              alt
+              class="photo"
+              draggable="false"
+          /></a>
+          <a href="index.html"> <p class="Header-name">Khushaank Gupta</p></a>
+          <p class="tagline">Musings on finance, business, and life</p>
+        </div>
+        <nav class="nav">
+          <a class="active" href="index.html">Home</a>
+          <a class="active" href="blog.html">Musings</a>
+          <a href="#" class="feed-toggle">
+            <img
+              src="assets/svg/feed.svg"
+              alt="Click to change mode"
+              draggable="false"
+            />
+          </a>
+        </nav>
+      </div>
+
+      <div class="content">
+        <div class="post single">
+          <div class="post-header">
+            <h3 class="title" id="post-title">Loading…</h3>
+            <div class="date" id="post-date"></div>
+            <ul class="tags flat" id="post-tags"></ul>
+            <!-- NEW -->
+          </div>
+          <div class="body" id="post-body">Loading post…</div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">Khushaank Gupta &copy;2021 - 2025</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+      function fmtDate(iso) {
+        const d = new Date(iso);
+        return d.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      }
+      function setMeta(sel, val) {
+        const el = document.querySelector(sel);
+        if (el)
+          el.setAttribute(
+            sel.includes("property") ? "content" : "content",
+            val
+          );
+      }
+      async function run() {
+        const params = new URLSearchParams(location.search);
+        const slug = params.get("slug");
+        if (!slug) {
+          document.getElementById("post-body").textContent =
+            "No post specified.";
+          return;
+        }
+        const res = await fetch("posts.json");
+        const all = await res.json();
+        const post = all.find((p) => p.slug === slug);
+        if (!post) {
+          document.getElementById("post-body").textContent = "Post not found.";
+          return;
+        }
+
+        // Fill header/meta
+        document.title = `${post.title} - Khushaank Gupta's personal homepage`;
+        document.getElementById("post-title").textContent = post.title;
+        document.getElementById("post-date").textContent = fmtDate(post.date);
+
+        const desc = post.description || "";
+        const url = `${location.origin}${
+          location.pathname
+        }?slug=${encodeURIComponent(slug)}`;
+
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute("content", desc);
+        const ogTitle = document.querySelector('meta[property="og:title"]');
+        if (ogTitle) ogTitle.setAttribute("content", document.title);
+        const ogDesc = document.querySelector(
+          'meta[property="og:description"]'
+        );
+        if (ogDesc) ogDesc.setAttribute("content", desc);
+        const ogUrl = document.querySelector('meta[property="og:url"]');
+        if (ogUrl) ogUrl.setAttribute("content", url);
+
+        // Tags
+        const tagsEl = document.getElementById("post-tags");
+        tagsEl.innerHTML = (post.tags || [])
+          .map(
+            (t) =>
+              `<li><a href="tags.html#${encodeURIComponent(
+                t.toLowerCase()
+              )}">${t}</a></li>`
+          )
+          .join("");
+
+        // Fetch & render Markdown
+        const mdRes = await fetch(post.md);
+        const mdText = await mdRes.text();
+
+        // Strip YAML frontmatter if present
+        const fm = /^---\n[\s\S]*?\n---\n?/;
+        const pure = mdText.replace(fm, "");
+        document.getElementById("post-body").innerHTML = marked.parse(pure);
+      }
+      run();
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
