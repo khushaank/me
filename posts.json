@@ -2,81 +2,9 @@
   {
     "slug": "post-1",
     "md": "posts/post-1.md",
-    "title": "Sample Post 1",
+    "title": "दिव्यदृष्टि",
     "date": "2025-08-11",
-    "description": "This is a sample description for Post 1.",
-    "tags": ["sample", "post" ,"else"]
-  },
-  {
-    "slug": "post-2",
-    "md": "posts/post-2.md",
-    "title": "Sample Post 2",
-    "date": "2025-08-12",
-    "description": "This is a sample description for Post 2.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-3",
-    "md": "posts/post-3.md",
-    "title": "Sample Post 3",
-    "date": "2025-08-13",
-    "description": "This is a sample description for Post 3.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-4",
-    "md": "posts/post-4.md",
-    "title": "Sample Post 4",
-    "date": "2025-08-14",
-    "description": "This is a sample description for Post 4.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-5",
-    "md": "posts/post-5.md",
-    "title": "Sample Post 5",
-    "date": "2025-08-15",
-    "description": "This is a sample description for Post 5.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-6",
-    "md": "posts/post-6.md",
-    "title": "Sample Post 6",
-    "date": "2025-08-16",
-    "description": "This is a sample description for Post 6.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-7",
-    "md": "posts/post-7.md",
-    "title": "Sample Post 7",
-    "date": "2025-08-17",
-    "description": "This is a sample description for Post 7.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-8",
-    "md": "posts/post-8.md",
-    "title": "Sample Post 8",
-    "date": "2025-08-18",
-    "description": "This is a sample description for Post 8.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-9",
-    "md": "posts/post-9.md",
-    "title": "Sample Post 9",
-    "date": "2025-08-19",
-    "description": "This is a sample description for Post 9.",
-    "tags": ["sample", "post"]
-  },
-  {
-    "slug": "post-10",
-    "md": "posts/post-10.md",
-    "title": "Sample Post 10",
-    "date": "2025-08-20",
-    "description": "This is a sample description for Post 10.",
+    "description": "दिव्यदृष्टि — an observation I had (as thought, expanded by a Sanskrit ācārya)",
     "tags": ["sample", "post"]
   }
 ]
