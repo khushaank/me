@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="Assets/icons/favicon.png" />
+    <title>User | Khushaank Gupta</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f9f9f9;
+        color: #111;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+      .auth-container {
+        background: #fff;
+        padding: 2.5rem;
+        border-radius: 14px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
+        animation: fadeIn 0.6s ease;
+      }
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+      .input-group {
+        margin-bottom: 1.2rem;
+        text-align: left;
+      }
+      .input-group label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 0.3rem;
+        color: #555;
+      }
+      .input-group input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: border 0.2s ease;
+      }
+      .input-group input:focus {
+        outline: none;
+        border-color: #111;
+      }
+      button {
+        width: 100%;
+        padding: 0.9rem;
+        background: #111;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        margin-top: 0.5rem;
+      }
+      button:hover {
+        background: #333;
+      }
+      .links {
+        margin-top: 1.3rem;
+        font-size: 0.9rem;
+        color: #555;
+      }
+      .links a {
+        color: #111;
+        font-weight: 500;
+        text-decoration: none;
+        margin: 0 0.4rem;
+        cursor: pointer;
+      }
+      .links a:hover {
+        text-decoration: underline;
+      }
+      #backLink {
+        display: block;
+        margin-top: 15px;
+        color: #333;
+        font-size: 0.9rem;
+        text-decoration: none;
+      }
+      #backLink:hover {
+        text-decoration: underline;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="auth-container" id="authBox">
+      <h1 id="authTitle">Login</h1>
+
+      <!-- Login -->
+      <form id="loginForm">
+        <div class="input-group">
+          <label>Email</label>
+          <input
+            id="loginEmail"
+            type="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input
+            id="loginPassword"
+            type="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <button type="submit">Login</button>
+      </form>
+
+      <!-- Sign Up -->
+      <form id="signupForm" style="display: none">
+        <div class="input-group">
+          <label>Full Name</label>
+          <input
+            id="signupName"
+            type="text"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input
+            id="signupEmail"
+            type="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input
+            id="signupPassword"
+            type="password"
+            placeholder="Create a password"
+            required
+          />
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <!-- Forgot Password -->
+      <form id="forgotForm" style="display: none">
+        <div class="input-group">
+          <label>Email</label>
+          <input
+            id="forgotEmail"
+            type="email"
+            placeholder="Enter your email to reset password"
+            required
+          />
+        </div>
+        <button type="submit">Reset Password</button>
+      </form>
+
+      <!-- Links -->
+      <div class="links" id="authLinks">
+        <a onclick="switchForm('signup')">Sign up</a> |
+        <a onclick="switchForm('forgot')">Forgot password?</a>
+      </div>
+
+      <a id="backLink" style="display: none">← Go Back</a>
+    </div>
+
+    <script type="module">
+      import { auth } from "./Assets/js/auth.js";
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.0/firebase-auth.js";
+
+      // If already logged in → send them back where they came from or home
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const to =
+            sessionStorage.getItem("referrer") ||
+            (document.referrer && !document.referrer.includes("user.html")
+              ? document.referrer
+              : null) ||
+            "index.html";
+          window.location.href = to;
+        }
+      });
+
+      // Back link
+      const prev =
+        sessionStorage.getItem("referrer") ||
+        (document.referrer && !document.referrer.includes("user.html")
+          ? document.referrer
+          : "");
+      if (prev) {
+        const backLink = document.getElementById("backLink");
+        backLink.href = prev;
+        backLink.style.display = "block";
+      }
+    </script>
+    <script src="Assets/js/auth.js" type="module"></script>
+  </body>
+</html>

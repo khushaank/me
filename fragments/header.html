@@ -1,0 +1,98 @@
+<!-- fragments/header.html -->
+<header>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <!-- Left: Hamburger -->
+    <div class="nav-left">
+      <button id="menuOpen" class="hamburger" aria-label="Open Menu">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Center: Name -->
+    <div class="nav-center">
+      <a href="index.html">Khushaank Gupta</a>
+    </div>
+
+    <!-- Right: Greeting + User Icon -->
+    <div class="nav-right">
+      <span id="userGreeting"></span>
+      <div
+        class="user-wrapper"
+        style="position: relative; display: inline-block"
+      >
+        <img
+          id="userIcon"
+          src="Assets/svg/user.svg"
+          alt="User"
+          class="nav-svg-icon"
+          style="cursor: pointer"
+        />
+        <!-- Logout dropdown -->
+        <div
+          id="logoutMenu"
+          style="
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            padding: 8px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+          "
+        >
+          <button id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="side-menu" id="sideMenu">
+    <div class="menu-top">
+      <span id="menuClose">&times;</span>
+    </div>
+
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li id="galleryMenuItem" style="display: none">
+        <a href="gallery.html">Gallery</a>
+      </li>
+      <li><a href="though.html">Thoughts</a></li>
+      <li>
+        <a
+          href="mailto:khushaankgupta@gmail.com?subject=Let%27s%20Connect&body=Hi%20Khushaank%2C%0D%0A%0D%0AI%20came%20across%20your%20work%20and%20thought%20it%20would%20be%20great%20to%20connect.%0D%0A%0D%0ALooking%20forward%20to%20hearing%20from%20you!%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Name%5D"
+          target="_blank"
+          >Contact</a
+        >
+      </li>
+    </ul>
+
+    <!-- Bottom: User avatar -->
+    <div class="menu-bottom">
+      <img
+        id="userIconSidebar"
+        src="Assets/svg/user.svg"
+        alt="User"
+        class="menu-svg-icon"
+        style="cursor: pointer"
+      />
+    </div>
+  </aside>
+</header>
+<!-- End of Header -->

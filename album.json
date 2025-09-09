@@ -1,0 +1,27 @@
+[
+  {
+    "src": "album/1.jpg",
+    "title": "Lighthouse",
+    "tags": ["sea", "night", "guiding"]
+  },
+  {
+    "src": "album/2.jpg",
+    "title": "Modern Building",
+    "tags": ["architecture", "glass", "minimal"]
+  },
+  {
+    "src": "album/3.jpg",
+    "title": "Beach",
+    "tags": ["sand", "waves", "nature"]
+  },
+  {
+    "src": "album/4.jpg",
+    "title": "Portrait",
+    "tags": ["people", "portrait", "artistic"]
+  },
+  {
+    "src": "album/5.jpg",
+    "title": "Forest Path",
+    "tags": ["nature", "trees", "green"]
+  }
+]

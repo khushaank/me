@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="Assets/icons/favicon.png" />
+    <meta name="author" content="Khushaank Gupta" />
+    <title>Home | Khushaank Gupta</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body>
+    <!-- Above -->
+    <div class="article-banner">
+      <img
+        src="Assets/images/banner.jpg"
+        alt="Article banner"
+        class="article-banner-img"
+      />
+
+      <!-- Back button (top-left) -->
+      <a
+        href="though.html"
+        class="thoughts-back-link"
+        aria-label="Back to all thoughts"
+        >← Back</a
+      >
+
+      <!-- Next Blog button (top-right) -->
+      <a id="nextBlogBtn" href="#" class="next-blog-btn">Next →</a>
+
+      <!-- Title (bottom-left) -->
+      <h1 id="articleTitle" class="article-title">Loading…</h1>
+    </div>
+
+    <!-- Main Content -->
+    <section class="thoughts-article-zone">
+      <div class="thoughts-article-wrapper">
+        <!-- Dynamic Post Content -->
+        <div id="postContent" class="thoughts-post-card"></div>
+
+        <!-- Author Box -->
+        <div class="thoughts-author-box">
+          <div class="thoughts-author-header">
+            <h3 class="thoughts-author-name">Khushaank Gupta</h3>
+          </div>
+          <div class="thoughts-author-info">
+            <p class="thoughts-author-bio">
+              Curious mind exploring ideas through thoughts and reflections.
+              Passionate about finance, business, technology, creativity, and
+              meaningful conversations.
+            </p>
+            <div class="thoughts-author-links">
+              <a href="about.html" class="thoughts-author-btn">Know More</a>
+              <a
+                href="mailto:khushaankgupta@gmail.com?subject=Let%27s%20Connect&body=Hi%20Khushaank%2C%0D%0A%0D%0AI%20came%20across%20your%20work%20and%20thought%20it%20would%20be%20great%20to%20connect.%0D%0A%0D%0ALooking%20forward%20to%20hearing%20from%20you!%0D%0A%0D%0ABest%20regards%2C%0D%0A%5BYour%20Name%5D"
+                class="thoughts-author-btn"
+                >Contact Author</a
+              >
+            </div>
+          </div>
+        </div>
+        <!-- End Author Box -->
+      </div>
+    </section>
+
+    <!-- End of Main Content -->
+    <div id="footer"></div>
+    <script src="Assets/js/scripts.js"></script>
+    <script src="Assets/js/custom-menu.js" type="module"></script>
+    <script src="Assets/js/search.js"></script>
+
+    <script
+      src="https://kit.fontawesome.com/b45eeaa035.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      async function loadPost() {
+        const params = new URLSearchParams(window.location.search);
+        const file = params.get("post");
+        if (!file) return;
+
+        // Set title
+        const niceTitle = file
+          .replace(/\.md$/i, "")
+          .replace(/[-_]+/g, " ")
+          .replace(/\b\w/g, (c) => c.toUpperCase());
+        document.getElementById("articleTitle").textContent = niceTitle;
+        document.title = niceTitle + " | Thoughts";
+
+        // Load post content
+        try {
+          const res = await fetch("./thoughts/" + file);
+          if (!res.ok) throw new Error("Fetch failed");
+          const md = await res.text();
+          const html =
+            window.marked && typeof marked.parse === "function"
+              ? marked.parse(md)
+              : md
+                  .replace(
+                    /[&<>]/g,
+                    (s) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[s])
+                  )
+                  .replace(/\n/g, "<br>");
+          document.getElementById("postContent").innerHTML = html;
+        } catch (e) {
+          document.getElementById("postContent").innerHTML =
+            "<p>Could not load this post.</p>";
+        }
+
+        // Next blog logic
+        try {
+          const listRes = await fetch("./thoughts/index.json");
+          const posts = await listRes.json();
+          const idx = posts.indexOf(file);
+          if (idx >= 0 && idx < posts.length - 1) {
+            document.getElementById("nextBlogBtn").href =
+              "blog.html?post=" + posts[idx + 1];
+          } else {
+            document.getElementById("nextBlogBtn").style.display = "none";
+          }
+        } catch (e) {
+          document.getElementById("nextBlogBtn").style.display = "none";
+        }
+      }
+      loadPost();
+    </script>
+  </body>
+</html>
