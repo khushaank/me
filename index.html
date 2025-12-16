@@ -59,9 +59,9 @@
         -webkit-font-smoothing: antialiased;
         overflow-x: hidden;
         width: 100%;
-        cursor: none; /* Hide Default Cursor */
+        cursor: none;
         padding-top: var(--header-height);
-        padding-bottom: 120px;
+        padding-bottom: 0;
       }
 
       body.loading {
@@ -866,6 +866,9 @@
 
       /* ========== RESPONSIVE ========== */
       @media (max-width: 900px) {
+        body {
+          padding-bottom: 100px; /* Add space back so the Dock doesn't cover content */
+        }
         .hero-grid {
           grid-template-columns: 1fr;
           gap: 3rem;
@@ -898,7 +901,12 @@
           font-size: 3rem;
         }
         .hero-section {
-          padding-top: 1rem;
+          min-height: auto;
+          padding-top: 2rem;
+        }
+        .marquee-section {
+          padding-top: 1.5rem; /* Reduce top padding of the scrolling text */
+          margin-bottom: 3rem; /* Pull the next section closer */
         }
         .portrait-box {
           height: 350px;
@@ -994,9 +1002,25 @@
       <a
         href="mailto:khushaankgupta@yahoo.com"
         class="dock-item"
-        style="font-size: 1.2rem"
-        >✉</a
+        aria-label="Send Email"
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+          ></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </a>
     </div>
 
     <main class="container hero-section">
@@ -1383,7 +1407,7 @@
               <a href="mailto:khushaankgupta@yahoo.com"
                 >khushaankgupta@yahoo.com</a
               >
-              <a href="#" onclick="window.print(); return false;"
+              <a href="sample.pdf" download="Khushaank_Gupta_Resume"
                 >Download Resume</a
               >
             </div>
