@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data:; object-src 'none'; base-uri 'self';"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    />
+
+    <title>Khushaank Gupta — Finance & Systems</title>
+    <meta
+      name="description"
+      content="Portfolio of Khushaank Gupta — Chartered Accountancy & Systems Thinking."
+    />
+    <meta name="theme-color" content="#f2efe9" />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,400&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ========== VARIABLES ========== */
+      :root {
+        --bg-root: #f2efe9;
+        --bg-card: #ffffff;
+        --text-primary: #1a1510;
+        --text-secondary: #5e544d;
+        --accent-orange: #ff4d00;
+        --border-light: rgba(0, 0, 0, 0.08);
+        --easing-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+        --container-width: 1200px;
+        --header-height: 80px;
+      }
+
+      /* ========== RESET & BASE ========== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--bg-root);
+        color: var(--text-primary);
+        font-family: "Inter", sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        width: 100%;
+        cursor: none; /* Hide Default Cursor */
+        padding-top: var(--header-height);
+        padding-bottom: 120px;
+      }
+
+      body.loading {
+        overflow: hidden;
+        height: 100vh;
+      }
+
+      ::selection {
+        background: var(--accent-orange);
+        color: white;
+      }
+      img,
+      a {
+        -webkit-user-drag: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+        cursor: none;
+      }
+      button {
+        cursor: none;
+      }
+
+      /* ========== CINEMATIC INTRO ========== */
+      #intro-curtain {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        background-color: #0d0d0d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 1.2s var(--easing-smooth);
+        will-change: transform;
+      }
+      .intro-text {
+        font-family: "Bodoni Moda", serif;
+        color: #fff;
+        font-size: clamp(2rem, 8vw, 5rem);
+        animation: introSequence 2.2s forwards;
+        will-change: opacity, transform, filter;
+      }
+      @keyframes introSequence {
+        0% {
+          opacity: 0;
+          filter: blur(15px);
+          transform: scale(0.95);
+        }
+        40% {
+          opacity: 1;
+          filter: blur(0px);
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          filter: blur(5px);
+          transform: scale(1.05);
+        }
+      }
+      body.loaded #intro-curtain {
+        transform: translateY(-100%);
+      }
+
+      /* ========== CUSTOM CURSOR ========== */
+      .cursor-dot {
+        display: none;
+      }
+
+      @media (pointer: fine) {
+        .cursor-dot {
+          display: block;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 12px;
+          height: 12px;
+          /* White bg with difference mode = Black dot on white bg */
+          background: #fff;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 2147483647;
+          mix-blend-mode: difference;
+          transform: translate3d(-50%, -50%, 0);
+          transition: width 0.3s cubic-bezier(0.19, 1, 0.22, 1),
+            height 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.2s ease;
+          opacity: 0; /* Hidden initially until moved */
+        }
+        body.hovering .cursor-dot {
+          width: 50px;
+          height: 50px;
+          background: #fff;
+        }
+      }
+
+      /* ========== GRAIN TEXTURE ========== */
+      .grain {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+        opacity: 0.04;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+
+      /* ========== COMMAND PALETTE ========== */
+      .cmd-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: 100000;
+        display: none;
+        justify-content: center;
+        align-items: start;
+        padding-top: 15vh;
+        animation: fadeIn 0.2s ease forwards;
+        cursor: none;
+      }
+      .cmd-modal {
+        background: #fff;
+        width: 90%;
+        max-width: 600px;
+        border-radius: 16px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        transform: scale(0.95);
+        animation: scaleIn 0.2s 0.05s ease forwards;
+      }
+      .cmd-input-wrapper {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-light);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .cmd-icon {
+        color: #999;
+        font-size: 1.2rem;
+      }
+      .cmd-input {
+        border: none;
+        outline: none;
+        font-size: 1.1rem;
+        width: 100%;
+        font-family: "Inter", sans-serif;
+        color: var(--text-primary);
+        cursor: none;
+      }
+      .cmd-list {
+        list-style: none;
+        padding: 0.5rem;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .cmd-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1rem;
+        border-radius: 8px;
+        cursor: none;
+        transition: background 0.1s;
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+      }
+      .cmd-item.active,
+      .cmd-item:hover {
+        background: #f4f4f4;
+        color: var(--text-primary);
+      }
+      .cmd-shortcut {
+        font-size: 0.75rem;
+        background: #e0e0e0;
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #666;
+      }
+      .cmd-footer {
+        padding: 0.8rem 1.5rem;
+        background: #fafaf8;
+        border-top: 1px solid var(--border-light);
+        font-size: 0.75rem;
+        color: #999;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes scaleIn {
+        from {
+          transform: scale(0.95);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      /* ========== NAVIGATION ========== */
+      .top-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--header-height);
+        padding: 0 5vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+        background: rgba(242, 239, 233, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .brand {
+        font-family: "Bodoni Moda";
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: var(--text-primary);
+      }
+      .brand-sub {
+        font-family: "Inter";
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        display: block;
+        line-height: 1.2;
+      }
+      .desktop-menu {
+        display: flex;
+        gap: 3rem;
+      }
+      .nav-item {
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        color: var(--text-secondary);
+        position: relative;
+        font-weight: 600;
+        transition: color 0.3s;
+        padding: 0.5rem 0;
+      }
+      .nav-item:hover {
+        color: var(--accent-orange);
+      }
+
+      /* ========== LAYOUT ========== */
+      .container {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        padding: 0 5vw;
+        width: 100%;
+      }
+
+      .hero-section {
+        min-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 4rem 5vw;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+
+      .portrait-box {
+        position: relative;
+        height: 550px;
+        width: 100%;
+        border-radius: 32px;
+        overflow: hidden;
+        transform: rotate(2deg);
+        transition: transform 0.5s ease;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+      }
+      .portrait-box:hover {
+        transform: rotate(0deg) scale(1.02);
+      }
+      .portrait-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 20%;
+        transform: scale(1.05);
+        transition: transform 1.5s ease;
+      }
+      .portrait-box:hover img {
+        transform: scale(1);
+      }
+
+      .eyebrow-pill {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        background: #e6e1d6;
+        color: var(--accent-orange);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 2rem;
+      }
+      h1 {
+        font-family: "Bodoni Moda";
+        font-size: clamp(3rem, 8vw, 5.5rem);
+        line-height: 0.95;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+      }
+      h1 span {
+        font-style: italic;
+        color: var(--accent-orange);
+      }
+      .hero-desc {
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        color: var(--text-secondary);
+        line-height: 1.6;
+        max-width: 500px;
+        padding-left: 1.5rem;
+        border-left: 2px solid var(--accent-orange);
+        margin-bottom: 2.5rem;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .btn {
+        padding: 1rem 2.5rem;
+        border-radius: 99px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        transition: transform 0.2s, background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn-dark {
+        background: #1a1510;
+        color: #fff;
+        border: 1px solid #1a1510;
+      }
+      .btn-dark:hover {
+        background: var(--accent-orange);
+        border-color: var(--accent-orange);
+        transform: translateY(-3px);
+      }
+      .btn-light {
+        background: transparent;
+        color: #1a1510;
+        border: 1px solid #1a1510;
+      }
+      .btn-light:hover {
+        background: #1a1510;
+        color: #fff;
+        transform: translateY(-3px);
+      }
+
+      /* Marquee */
+      .marquee-section {
+        padding: 4rem 0;
+        overflow: hidden;
+        background: #fff;
+        border-block: 1px solid var(--border-light);
+        margin-bottom: 6rem;
+      }
+      .marquee-track {
+        display: flex;
+        gap: 4rem;
+        width: max-content;
+        animation: scroll 40s linear infinite;
+        will-change: transform;
+      }
+      .mq-item {
+        font-family: "Bodoni Moda";
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        color: #e0e0e0;
+        font-style: italic;
+      }
+      .mq-item.highlight {
+        color: var(--accent-orange);
+        opacity: 0.8;
+      }
+      @keyframes scroll {
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* Headers */
+      .section-header {
+        margin-bottom: 4rem;
+      }
+      .section-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: var(--accent-orange);
+        font-weight: 700;
+        display: block;
+        margin-bottom: 1rem;
+      }
+      .section-title {
+        font-family: "Bodoni Moda";
+        font-size: clamp(2rem, 4vw, 2.5rem);
+        color: var(--text-primary);
+      }
+
+      /* Services */
+      .services-section {
+        padding: 6rem 0;
+      }
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+      .service-card {
+        padding: 2.5rem;
+        background: #fff;
+        border: 1px solid var(--border-light);
+        border-radius: 8px;
+        transition: 0.3s;
+      }
+      .service-card:hover {
+        border-color: var(--text-primary);
+        transform: translateY(-3px);
+      }
+      .svc-num {
+        font-family: "Bodoni Moda";
+        color: var(--accent-orange);
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .svc-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+      }
+      .svc-desc {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* Skills */
+      .skills-section {
+        padding: 6rem 0;
+        background: var(--bg-root);
+      }
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+      .skill-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-light);
+        transition: all 0.3s ease;
+        height: 100%;
+      }
+      .skill-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-orange);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      }
+      .skill-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+      .skill-name {
+        font-family: "Bodoni Moda";
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+      .skill-desc {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+
+      /* Experience */
+      .timeline-section {
+        padding: 6rem 0;
+      }
+      .timeline-container {
+        position: relative;
+        padding-left: 2rem;
+        border-left: 2px solid #ddd;
+      }
+      .timeline-item {
+        position: relative;
+        margin-bottom: 4rem;
+        padding-left: 1.5rem;
+      }
+      .timeline-item:last-child {
+        margin-bottom: 0;
+      }
+      .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -2.6rem;
+        top: 6px;
+        width: 16px;
+        height: 16px;
+        background: var(--bg-root);
+        border: 2px solid var(--accent-orange);
+        border-radius: 50%;
+        transition: background 0.3s;
+      }
+      .timeline-item:hover::before {
+        background: var(--accent-orange);
+      }
+      .t-date {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--accent-orange);
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        display: block;
+      }
+      .t-role {
+        font-family: "Bodoni Moda";
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .t-org {
+        font-size: 1rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+      .t-desc {
+        color: var(--text-secondary);
+        max-width: 650px;
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      /* Projects */
+      .projects-section {
+        padding: 6rem 0;
+        background: #fff;
+        border-block: 1px solid var(--border-light);
+      }
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 3rem;
+      }
+      .project-card {
+        border-bottom: 1px solid var(--border-light);
+        padding-bottom: 2rem;
+      }
+      .p-year {
+        font-size: 0.8rem;
+        color: #999;
+        margin-bottom: 0.8rem;
+        display: block;
+      }
+      .p-title {
+        font-family: "Bodoni Moda";
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        transition: color 0.3s;
+        line-height: 1.2;
+      }
+      .project-card:hover .p-title {
+        color: var(--accent-orange);
+      }
+      .p-tags {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.2rem;
+      }
+      .p-tag {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        padding: 6px 12px;
+        background: #f4f4f4;
+        border-radius: 4px;
+        color: var(--text-secondary);
+        font-weight: 600;
+      }
+      .p-outcome {
+        font-size: 0.85rem;
+        color: var(--accent-orange);
+        font-weight: 600;
+        margin-top: 1rem;
+        display: block;
+      }
+
+      /* Approach */
+      .approach-section {
+        padding: 8rem 0;
+        background: #fff;
+      }
+      .approach-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+      }
+      .approach-text p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+      }
+      .approach-text strong {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      /* Testimonials */
+      .testimonials-section {
+        padding: 6rem 0;
+        background: var(--bg-root);
+        border-top: 1px solid var(--border-light);
+      }
+      .testimonial-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+      .test-card {
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .test-quote {
+        font-family: "Bodoni Moda";
+        font-size: 1.2rem;
+        line-height: 1.5;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+      }
+      .test-auth {
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+      .test-role {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        display: block;
+      }
+
+      /* Writing */
+      .writing-section {
+        padding: 6rem 0;
+      }
+      .writing-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .writing-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        border-bottom: 1px solid var(--border-light);
+        padding-bottom: 1rem;
+        transition: 0.3s;
+      }
+      .writing-item:hover {
+        transform: translateX(10px);
+      }
+      .w-title {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+      .w-meta {
+        font-size: 0.85rem;
+        color: #999;
+      }
+
+      /* Mobile Dock */
+      .mobile-dock {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 0.8rem 1.5rem;
+        border-radius: 99px;
+        display: none;
+        align-items: center;
+        gap: 2rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        z-index: 1000;
+        width: max-content;
+      }
+      .dock-item {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .dock-item.active {
+        color: var(--accent-orange);
+      }
+      .dock-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--accent-orange);
+        border-radius: 50%;
+      }
+
+      /* Footer */
+      footer {
+        padding: 6rem 5vw 2rem 5vw;
+        background: #fafaf8;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .footer-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        max-width: var(--container-width);
+        margin: 0 auto;
+      }
+      .footer-brand h2 {
+        font-family: "Bodoni Moda";
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      .footer-links {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+      }
+      .footer-col h4 {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: #999;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+      }
+      .footer-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .footer-list a {
+        font-size: 1rem;
+        transition: color 0.2s, transform 0.2s;
+        display: inline-block;
+        word-break: break-all;
+      }
+      .footer-list a:hover {
+        color: var(--accent-orange);
+        transform: translateX(5px);
+      }
+      .footer-bottom {
+        padding-top: 2rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 1s var(--easing-smooth);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ========== RESPONSIVE ========== */
+      @media (max-width: 900px) {
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+        .portrait-box {
+          order: -1;
+          height: 450px;
+          transform: rotate(0deg);
+        }
+        .desktop-menu {
+          display: none;
+        }
+        .mobile-dock {
+          display: flex;
+        }
+        .footer-links {
+          grid-template-columns: 1fr 1fr;
+        }
+        .approach-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 0 6vw;
+        }
+        h1 {
+          font-size: 3rem;
+        }
+        .hero-section {
+          padding-top: 1rem;
+        }
+        .portrait-box {
+          height: 350px;
+        }
+        .btn {
+          width: 100%;
+        }
+        .cta-row {
+          flex-direction: column;
+        }
+        .footer-links {
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+        }
+        .mobile-dock {
+          bottom: 1.5rem;
+          width: 92%;
+          justify-content: space-between;
+          padding: 0.9rem 1.2rem;
+          gap: 0;
+        }
+        .mq-item {
+          font-size: 2rem;
+        }
+        .project-grid {
+          grid-template-columns: 1fr;
+        }
+        .writing-item {
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+      }
+
+      /* ========== PRINT STYLES - BLOCKED ========== */
+      @media print {
+        body {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="loading">
+    <div id="intro-curtain">
+      <div class="intro-text">KHUSHAANK.</div>
+    </div>
+
+    <div class="grain"></div>
+
+    <div class="cursor-dot"></div>
+
+    <div class="cmd-backdrop" id="cmdBackdrop">
+      <div class="cmd-modal">
+        <div class="cmd-input-wrapper">
+          <span class="cmd-icon">›</span>
+          <input
+            type="text"
+            class="cmd-input"
+            id="cmdInput"
+            placeholder="Type a command..."
+            autocomplete="off"
+          />
+          <span class="cmd-shortcut">ESC</span>
+        </div>
+        <ul class="cmd-list" id="cmdList"></ul>
+        <div class="cmd-footer">
+          <span>Select <span class="cmd-shortcut">↵</span></span>
+          <span>Navigate <span class="cmd-shortcut">↑↓</span></span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="top-nav">
+      <div>
+        <a href="#" class="brand">Khushaank.</a>
+        <span class="brand-sub">Finance × Systems Thinking</span>
+      </div>
+      <div class="desktop-menu">
+        <a href="#about" class="nav-item">Profile</a>
+        <a href="#services" class="nav-item">Services</a>
+        <a href="#work" class="nav-item">Trajectory</a>
+        <a href="#writing" class="nav-item">Writing</a>
+        <a href="#connect" class="nav-item">Contact</a>
+      </div>
+    </nav>
+
+    <div class="mobile-dock">
+      <a href="#about" class="dock-item"
+        ><div class="dock-dot"></div>
+        Profile</a
+      >
+      <a href="#skills" class="dock-item">Skills</a>
+      <a href="#work" class="dock-item">Work</a>
+      <a
+        href="mailto:khushaankgupta@yahoo.com"
+        class="dock-item"
+        style="font-size: 1.2rem"
+        >✉</a
+      >
+    </div>
+
+    <main class="container hero-section">
+      <div class="hero-grid">
+        <div class="portrait-box reveal active">
+          <img src="khush.png" alt="Khushaank Gupta Portrait" />
+        </div>
+
+        <div class="hero-txt reveal active" style="transition-delay: 0.1s">
+          <div class="eyebrow-pill">Finance & Strategy</div>
+          <h1>Order within<br /><span>Chaos.</span></h1>
+          <p class="hero-desc">
+            Bridging the gap between complex financial numbers and clear
+            strategic decisions. Chartered Accountancy student & Systems Thinker
+            based in Delhi.
+          </p>
+          <div class="cta-row">
+            <a href="#work" class="btn btn-dark">View Trajectory</a>
+            <a
+              href="https://youtube.com/@khushaankgupta"
+              target="_blank"
+              class="btn btn-light"
+              >YouTube</a
+            >
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <section class="marquee-section">
+      <div class="marquee-track">
+        <div class="marquee-group">
+          <span class="mq-item">Financial Modeling</span>
+          <span class="mq-item highlight">Strategy</span>
+          <span class="mq-item">Audit Assurance</span>
+          <span class="mq-item">Data Analytics</span>
+          <span class="mq-item highlight">Systems Thinking</span>
+          <span class="mq-item">Forecasting</span>
+          <span class="mq-item">Financial Modeling</span>
+          <span class="mq-item highlight">Strategy</span>
+          <span class="mq-item">Audit Assurance</span>
+          <span class="mq-item">Data Analytics</span>
+          <span class="mq-item highlight">Systems Thinking</span>
+          <span class="mq-item">Forecasting</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="services-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Capabilities</span>
+          <h2 class="section-title">Core Services</h2>
+        </div>
+        <div class="services-grid reveal">
+          <div class="service-card">
+            <span class="svc-num">01</span>
+            <h3 class="svc-title">Financial Architecture</h3>
+            <p class="svc-desc">
+              Building robust, scalable financial models that withstand market
+              volatility. From DCF to LBO analysis, I structure data to tell a
+              clear story.
+            </p>
+          </div>
+          <div class="service-card">
+            <span class="svc-num">02</span>
+            <h3 class="svc-title">Process Automation</h3>
+            <p class="svc-desc">
+              Eliminating manual data entry through Python scripts and VBA
+              macros. I turn 4-hour reconciliation tasks into 4-second button
+              clicks.
+            </p>
+          </div>
+          <div class="service-card">
+            <span class="svc-num">03</span>
+            <h3 class="svc-title">Audit Readiness</h3>
+            <p class="svc-desc">
+              Pre-emptive internal control testing and ledger scrutiny to ensure
+              statutory audits are painless and compliant with Ind AS.
+            </p>
+          </div>
+          <div class="service-card">
+            <span class="svc-num">04</span>
+            <h3 class="svc-title">Strategic Consulting</h3>
+            <p class="svc-desc">
+              Translating raw accounting data into actionable insights for
+              manufacturing and service-based MSMEs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="skills-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">The Arsenal</span>
+          <h2 class="section-title">Technical Proficiency</h2>
+        </div>
+        <div class="skills-grid reveal">
+          <div class="skill-card">
+            <div class="skill-icon">📊</div>
+            <h3 class="skill-name">Adv. Excel & Macros</h3>
+            <p class="skill-desc">
+              Building complex financial models, automated reporting dashboards,
+              and VBA scripting for efficiency.
+            </p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🐍</div>
+            <h3 class="skill-name">Python for Finance</h3>
+            <p class="skill-desc">
+              Data analysis using Pandas, automation of repetitive tasks, and
+              financial forecasting algorithms.
+            </p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🏢</div>
+            <h3 class="skill-name">SAP FICO & Tally</h3>
+            <p class="skill-desc">
+              ERP implementation support, ledger scrutiny, and reconciliation in
+              high-volume transaction environments.
+            </p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🔍</div>
+            <h3 class="skill-name">Audit Assurance</h3>
+            <p class="skill-desc">
+              Statutory audits, internal controls testing (IFC), and risk
+              assessment frameworks.
+            </p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">🧾</div>
+            <h3 class="skill-name">Taxation (GST/TDS)</h3>
+            <p class="skill-desc">
+              Compliance filing, Input Tax Credit (ITC) reconciliation, and
+              advisory on tax implications.
+            </p>
+          </div>
+          <div class="skill-card">
+            <div class="skill-icon">📉</div>
+            <h3 class="skill-name">Power BI & SQL</h3>
+            <p class="skill-desc">
+              Transforming raw data into visual insights. Database management
+              and query optimization.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="work" class="timeline-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Trajectory</span>
+          <h2 class="section-title">Experience</h2>
+        </div>
+        <div class="timeline-container reveal">
+          <div class="timeline-item">
+            <span class="t-date">2023 — Present</span>
+            <h3 class="t-role">Articled Assistant</h3>
+            <div class="t-org">Chartered Accountancy Firm</div>
+            <p class="t-desc">
+              Leading statutory audit engagements, ensuring compliance with Ind
+              AS. Managing tax filings and streamlining client financial
+              reporting systems. Conducted bank audits and stock audits for
+              manufacturing entities. <br /><strong
+                >Impact: Reduced client compliance errors by 15%.</strong
+              >
+            </p>
+          </div>
+          <div class="timeline-item">
+            <span class="t-date">2021 — Present</span>
+            <h3 class="t-role">Content Creator & Educator</h3>
+            <div class="t-org">YouTube / Digital Media</div>
+            <p class="t-desc">
+              Breaking down complex financial concepts and systems thinking
+              frameworks for a growing digital audience. Building a personal
+              brand around clarity and financial literacy.
+            </p>
+          </div>
+          <div class="timeline-item">
+            <span class="t-date">2021 — 2023</span>
+            <h3 class="t-role">Freelance Financial Analyst</h3>
+            <div class="t-org">Self-Employed</div>
+            <p class="t-desc">
+              Assisted MSMEs in cash flow forecasting and preparing project
+              reports for bank loan proposals. <br /><strong
+                >Outcome: Facilitated ₹50L in approved credit
+                facilities.</strong
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Selected Works</span>
+          <h2 class="section-title">Case Studies</h2>
+        </div>
+        <div class="project-grid reveal">
+          <div class="project-card">
+            <span class="p-year">2024</span>
+            <h3 class="p-title">Automated Inventory<br />Audit System</h3>
+            <div class="p-tags">
+              <span class="p-tag">Python</span><span class="p-tag">Excel</span
+              ><span class="p-tag">Audit</span>
+            </div>
+            <p class="t-desc">
+              Designed a script to cross-verify physical stock taking data with
+              ERP records, reducing reconciliation time by 60%.
+            </p>
+            <span class="p-outcome"
+              >Outcome: Saved 40+ man-hours per audit cycle.</span
+            >
+          </div>
+          <div class="project-card">
+            <span class="p-year">2023</span>
+            <h3 class="p-title">Portfolio Valuation<br />Model</h3>
+            <div class="p-tags">
+              <span class="p-tag">Financial Modeling</span
+              ><span class="p-tag">Forecasting</span>
+            </div>
+            <p class="t-desc">
+              A dynamic DCF model built to assess valuation for mid-cap
+              manufacturing entities considering multiple growth scenarios.
+            </p>
+            <span class="p-outcome"
+              >Outcome: Used for strategic acquisition planning.</span
+            >
+          </div>
+          <div class="project-card">
+            <span class="p-year">2023</span>
+            <h3 class="p-title">GST Compliance<br />Tracker</h3>
+            <div class="p-tags">
+              <span class="p-tag">Excel VBA</span
+              ><span class="p-tag">Taxation</span>
+            </div>
+            <p class="t-desc">
+              Created a dashboard to track monthly GST filings across 20+
+              clients, flagging potential ITC mismatches automatically.
+            </p>
+            <span class="p-outcome"
+              >Outcome: Zero penalty filings for 12 consecutive months.</span
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Endorsements</span>
+          <h2 class="section-title">What They Say</h2>
+        </div>
+        <div class="testimonial-grid reveal">
+          <div class="test-card">
+            <p class="test-quote">
+              "Khushaank doesn't just look at the numbers; he looks at the
+              system producing them. His automation scripts saved our firm weeks
+              of manual entry."
+            </p>
+            <div class="test-auth">Rahul Sharma</div>
+            <span class="test-role">Partner, RSA & Associates</span>
+          </div>
+          <div class="test-card">
+            <p class="test-quote">
+              "The clarity he brings to complex financial data is unmatched. His
+              valuation models stood up to intense scrutiny during our funding
+              round."
+            </p>
+            <div class="test-auth">Aditya Verma</div>
+            <span class="test-role">Founder, TechSpace Solutions</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="approach-section">
+      <div class="container reveal">
+        <div class="approach-grid">
+          <div class="approach-title">
+            <h2 class="quote-large">
+              "Numbers are just ink on paper until you give them a narrative."
+            </h2>
+          </div>
+          <div class="approach-text">
+            <p>
+              In a world flooded with data, the ability to discern signal from
+              noise is the ultimate asset. My work focuses on not just
+              calculating the outcome, but
+              <strong>designing the system</strong> that gets us there.
+            </p>
+            <p>
+              I operate at the intersection of traditional
+              <strong>Chartered Accountancy</strong> and modern
+              <strong>Data Science</strong>. While most see a balance sheet as a
+              static report, I see it as a diagnostic tool for the health of a
+              business system. By automating the mundane, I free up intellectual
+              capital for strategy.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="writing" class="writing-section">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="section-label">Thoughts</span>
+          <h2 class="section-title">Selected Writing</h2>
+        </div>
+        <div class="writing-list reveal">
+          <a href="#" class="writing-item">
+            <span class="w-title"
+              >The Death of Manual Reconciliation: Why Excel Isn't Enough</span
+            >
+            <span class="w-meta">Read Article ↗</span>
+          </a>
+          <a href="#" class="writing-item">
+            <span class="w-title"
+              >Systems Thinking applied to Statutory Audit</span
+            >
+            <span class="w-meta">Read Article ↗</span>
+          </a>
+          <a href="#" class="writing-item">
+            <span class="w-title"
+              >Forecasting 101: Moving beyond linear growth assumptions</span
+            >
+            <span class="w-meta">Read Article ↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer id="connect">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>Khushaank.</h2>
+          <p>
+            Merging the precision of accounting with the scalability of systems
+            thinking. Building clarity in complex financial landscapes.
+          </p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col">
+            <h4>Navigate</h4>
+            <div class="footer-list">
+              <a href="#">Home</a>
+              <a href="#about">Profile</a>
+              <a href="#services">Services</a>
+              <a href="#work">Trajectory</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Socials</h4>
+            <div class="footer-list">
+              <a href="https://linkedin.com/in/khushaank" target="_blank"
+                >LinkedIn</a
+              >
+              <a href="https://instagram.com/khushaankgupta" target="_blank"
+                >Instagram</a
+              >
+              <a href="https://youtube.com/@khushaankgupta" target="_blank"
+                >YouTube</a
+              >
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Resources</h4>
+            <div class="footer-list">
+              <a href="#writing">Blog</a>
+              <a href="#work">Case Studies</a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Get in Touch</h4>
+            <div class="footer-list">
+              <a href="mailto:khushaankgupta@yahoo.com"
+                >khushaankgupta@yahoo.com</a
+              >
+              <a href="#" onclick="window.print(); return false;"
+                >Download Resume</a
+              >
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © <span id="year">2025</span> Khushaank Gupta. Crafted with precision.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // 1. Loading Animation
+      window.addEventListener("load", function () {
+        window.scrollTo(0, 0);
+        setTimeout(() => {
+          document.body.classList.remove("loading");
+          document.body.classList.add("loaded");
+        }, 2200);
+      });
+
+      // 2. Strict Security (Disable Right Click, Print, Save, DevTools)
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "F12" ||
+          (e.ctrlKey && e.key === "u") ||
+          (e.ctrlKey && e.shiftKey && e.key === "I") ||
+          (e.ctrlKey && e.key === "s") ||
+          (e.ctrlKey && e.key === "p")
+        ) {
+          e.preventDefault();
+        }
+      });
+
+      // 3. Auto Year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // 4. Cursor Logic (Strict Desktop Only)
+      const cursorDot = document.querySelector(".cursor-dot");
+
+      if (window.matchMedia("(pointer: fine)").matches) {
+        document.addEventListener("mousemove", (e) => {
+          if (cursorDot.style.opacity !== "1") cursorDot.style.opacity = "1";
+          cursorDot.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate(-50%, -50%)`;
+        });
+        document.addEventListener(
+          "mouseleave",
+          () => (cursorDot.style.opacity = "0")
+        );
+        document.addEventListener(
+          "mouseenter",
+          () => (cursorDot.style.opacity = "1")
+        );
+
+        const interactives = document.querySelectorAll(
+          "a, button, input, .nav-item, .project-card, .skill-card, .service-card, .writing-item"
+        );
+        interactives.forEach((el) => {
+          el.addEventListener("mouseenter", () =>
+            document.body.classList.add("hovering")
+          );
+          el.addEventListener("mouseleave", () =>
+            document.body.classList.remove("hovering")
+          );
+        });
+      }
+
+      // 5. Command Palette (Ctrl + K)
+      const cmdBackdrop = document.getElementById("cmdBackdrop");
+      const cmdInput = document.getElementById("cmdInput");
+      const cmdList = document.getElementById("cmdList");
+      let cmdOpen = false;
+
+      const commands = [
+        {
+          icon: "👤",
+          title: "Go to Profile",
+          action: () => scrollToId("about"),
+        },
+        {
+          icon: "🛠️",
+          title: "View Services",
+          action: () => scrollToId("services"),
+        },
+        {
+          icon: "💼",
+          title: "View Work Experience",
+          action: () => scrollToId("work"),
+        },
+        {
+          icon: "📝",
+          title: "Read Writing",
+          action: () => scrollToId("writing"),
+        },
+        {
+          icon: "✉️",
+          title: "Send Email",
+          action: () =>
+            (window.location.href = "mailto:khushaankgupta@yahoo.com"),
+        },
+        {
+          icon: "🔗",
+          title: "LinkedIn Profile",
+          action: () =>
+            window.open("https://linkedin.com/in/khushaank", "_blank"),
+        },
+      ];
+
+      function renderCommands(filter = "") {
+        cmdList.innerHTML = "";
+        const filtered = commands.filter((c) =>
+          c.title.toLowerCase().includes(filter.toLowerCase())
+        );
+        filtered.forEach((cmd, index) => {
+          const li = document.createElement("li");
+          li.className = `cmd-item ${index === 0 ? "active" : ""}`;
+          li.innerHTML = `<span>${cmd.icon}  ${cmd.title}</span> <span class="cmd-shortcut">↵</span>`;
+          li.onclick = () => {
+            cmd.action();
+            toggleCmdPalette();
+          };
+          cmdList.appendChild(li);
+        });
+      }
+
+      function toggleCmdPalette() {
+        cmdOpen = !cmdOpen;
+        cmdBackdrop.style.display = cmdOpen ? "flex" : "none";
+        if (cmdOpen) {
+          cmdInput.value = "";
+          renderCommands();
+          setTimeout(() => cmdInput.focus(), 10);
+        }
+      }
+
+      function scrollToId(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+          e.preventDefault();
+          toggleCmdPalette();
+        }
+        if (e.key === "Escape" && cmdOpen) toggleCmdPalette();
+
+        if (cmdOpen && e.key === "Enter") {
+          const active = document.querySelector(".cmd-item.active");
+          if (active) active.click();
+        }
+        if (cmdOpen && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+          e.preventDefault();
+          const items = document.querySelectorAll(".cmd-item");
+          let activeIdx = Array.from(items).findIndex((i) =>
+            i.classList.contains("active")
+          );
+          items[activeIdx].classList.remove("active");
+          if (e.key === "ArrowDown") activeIdx = (activeIdx + 1) % items.length;
+          else activeIdx = (activeIdx - 1 + items.length) % items.length;
+          items[activeIdx].classList.add("active");
+          items[activeIdx].scrollIntoView({ block: "nearest" });
+        }
+      });
+
+      cmdBackdrop.addEventListener("click", (e) => {
+        if (e.target === cmdBackdrop) toggleCmdPalette();
+      });
+      cmdInput.addEventListener("input", (e) => renderCommands(e.target.value));
+
+      // 6. Scroll Reveal
+      const revealElements = document.querySelectorAll(".reveal");
+      const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+        revealElements.forEach((reveal) => {
+          if (reveal.getBoundingClientRect().top < windowHeight - 80)
+            reveal.classList.add("active");
+        });
+      };
+      window.addEventListener("scroll", revealOnScroll);
+      revealOnScroll(); // Trigger once on load
+    </script>
+  </body>
+</html>
