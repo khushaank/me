@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found | Khushaank Gupta</title>
+    <meta
+      name="description"
+      content="The page you are looking for does not exist."
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.png" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --orange: #ff6600;
+        --orange-light: #ff8533;
+        --dark: #0a0a0a;
+        --gray: #666;
+        --light-gray: #999;
+      }
+
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--dark);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Main Content */
+      .error-page {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+        position: relative;
+      }
+
+      /* Animated Background */
+      .bg-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.15;
+        pointer-events: none;
+      }
+
+      .glow-1 {
+        width: 600px;
+        height: 600px;
+        background: var(--orange);
+        top: -200px;
+        right: -200px;
+        animation: float1 20s ease-in-out infinite;
+      }
+
+      .glow-2 {
+        width: 400px;
+        height: 400px;
+        background: #ffd700;
+        bottom: -100px;
+        left: -100px;
+        animation: float2 25s ease-in-out infinite;
+      }
+
+      @keyframes float1 {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(-50px, 50px);
+        }
+      }
+
+      @keyframes float2 {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        50% {
+          transform: translate(30px, -30px);
+        }
+      }
+
+      /* Content Card */
+      .error-content {
+        text-align: center;
+        position: relative;
+        z-index: 10;
+        max-width: 480px;
+        animation: fadeIn 0.8s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Logo */
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 48px;
+        text-decoration: none;
+        color: white;
+      }
+
+      .logo img {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+      }
+
+      .logo span {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      /* 404 Number */
+      .error-code {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(120px, 25vw, 200px);
+        font-weight: 800;
+        line-height: 0.9;
+        letter-spacing: -6px;
+        margin-bottom: 16px;
+        background: linear-gradient(
+          135deg,
+          var(--orange) 0%,
+          var(--orange-light) 50%,
+          #ffc107 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 80px rgba(255, 102, 0, 0.3);
+      }
+
+      .error-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: clamp(24px, 5vw, 36px);
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: white;
+      }
+
+      .error-message {
+        font-size: 16px;
+        color: var(--light-gray);
+        line-height: 1.6;
+        margin-bottom: 36px;
+      }
+
+      /* CTA Button */
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 40px;
+        background: var(--orange);
+        color: white;
+        text-decoration: none;
+        font-family: "Space Grotesk", sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        border-radius: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .cta-btn:hover {
+        background: var(--orange-light);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(255, 102, 0, 0.3);
+      }
+
+      .cta-btn svg {
+        transition: transform 0.3s ease;
+      }
+
+      .cta-btn:hover svg {
+        transform: translateX(-4px);
+      }
+
+      /* Footer Links */
+      .footer-links {
+        margin-top: auto;
+        padding-top: 40px;
+        display: flex;
+        gap: 32px;
+        z-index: 10;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .footer-links a {
+        color: var(--gray);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        cursor: pointer;
+      }
+
+      .footer-links a:hover {
+        color: var(--orange);
+      }
+
+      /* Responsive */
+      @media (max-width: 600px) {
+        .error-page {
+          padding: 60px 20px 100px;
+        }
+        .logo {
+          margin-bottom: 32px;
+        }
+        .cta-btn {
+          width: 100%;
+          justify-content: center;
+        }
+        .footer-links {
+          bottom: 24px;
+          gap: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Background Glows -->
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <main class="error-page">
+      <div class="error-content">
+        <!-- Logo -->
+        <a href="index.html" class="logo">
+          <img src="logo.png" alt="KG" />
+          <span>KG</span>
+        </a>
+
+        <!-- Error Info -->
+        <div class="error-code">404</div>
+        <h1 class="error-title">Page Not Found</h1>
+        <p class="error-message">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+
+        <!-- CTA -->
+        <a href="index.html" class="cta-btn">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+          Back to Home
+        </a>
+      </div>
+
+      <!-- Footer Links -->
+      <div class="footer-links">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </main>
+  </body>
+</html>

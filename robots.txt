@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://khushaankgupta.qzz.io/sitemap.xml
