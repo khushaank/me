@@ -1074,11 +1074,15 @@ section {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
+  align-items: start;
 }
 
 .testimonial-card {
   padding: 40px;
   transition: var(--transition-smooth);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .testimonial-stars {
@@ -1129,13 +1133,6 @@ section {
   color: var(--color-text-light);
 }
 
-.pricing-card {
-  position: relative; /* Ensure absolute badge works */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Tooltip Styles */
 .tooltip-trigger {
   position: relative;
@@ -1151,24 +1148,27 @@ section {
   font-weight: bold;
   cursor: help;
   margin-left: 6px;
+  vertical-align: middle;
+  transform: translateY(-1px);
 }
 
 .tooltip-content {
   position: absolute;
-  bottom: 100%;
+  bottom: calc(100% + 8px);
   left: 50%;
-  transform: translateX(-50%) translateY(-8px);
+  transform: translateX(-50%);
   background: #333;
   color: white;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  z-index: 10;
+  z-index: 100;
   pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .tooltip-content::after {
@@ -1185,19 +1185,22 @@ section {
 .tooltip-trigger:hover .tooltip-content {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(-4px);
+  transform: translateX(-50%) translateY(0);
 }
 
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
+  align-items: start;
+  align-content: start;
 }
 
 .pricing-grid-small {
   grid-template-columns: repeat(2, 1fr);
   max-width: 800px;
   margin: 0 auto;
+  align-items: start;
 }
 
 .pricing-category {
@@ -1214,7 +1217,7 @@ section {
 
 .discount-badge {
   position: absolute;
-  top: 16px;
+  top: -14px;
   left: 16px;
   background: linear-gradient(135deg, #10b981, #059669);
   color: white;
@@ -1224,7 +1227,6 @@ section {
   border-radius: 20px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-top: -30px;
 }
 
 .original-price {
@@ -1253,20 +1255,23 @@ section {
 }
 
 .pricing-card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 40px;
   transition: var(--transition-smooth);
-  position: relative;
   border: 2px solid transparent;
+  margin: 0;
 }
 
 .pricing-card.featured {
   border-color: var(--color-primary);
-  transform: scale(1.05);
 }
 
 .pricing-badge {
   position: absolute;
-  top: -12px;
+  top: -14px;
   right: 40px;
   padding: 6px 16px;
   border-radius: 50px;
@@ -1315,6 +1320,7 @@ section {
 .pricing-features {
   list-style: none;
   margin-bottom: 32px;
+  flex-grow: 1;
 }
 
 .pricing-features li {
@@ -1779,6 +1785,10 @@ section {
 
   .services-grid,
   .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-grid-small {
     grid-template-columns: 1fr;
   }
 
@@ -2952,5 +2962,378 @@ section {
   }
   .footer-legal {
     gap: 20px;
+  }
+}
+
+/* =============================================
+   ADDITIONAL MOBILE RESPONSIVE FIXES
+   ============================================= */
+
+/* Ensure proper spacing and alignment on all mobile devices */
+@media (max-width: 900px) {
+  /* Grids maintain top alignment */
+  .testimonials-grid,
+  .pricing-grid,
+  .pricing-grid-small {
+    align-items: start !important;
+  }
+
+  /* Prevent featured card scaling issues on mobile */
+  .pricing-card.featured {
+    transform: none !important;
+  }
+}
+
+/* Mobile menu improvements */
+@media (max-width: 768px) {
+  .mobile-menu-content {
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  .mobile-menu-links {
+    margin-bottom: 20px;
+  }
+
+  /* Ensure tooltips work on mobile */
+  .tooltip-trigger {
+    cursor: pointer;
+  }
+}
+
+/* Small mobile devices - prevent overflow */
+@media (max-width: 480px) {
+  /* Prevent horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Ensure cards don't cause overflow */
+  .glass-card {
+    max-width: 100%;
+  }
+
+  /* Responsive pricing features */
+  .pricing-features li {
+    font-size: 14px;
+    padding: 10px 0;
+  }
+
+  /* Better tooltip positioning on small screens */
+  .tooltip-content {
+    font-size: 11px;
+    padding: 5px 10px;
+    max-width: 200px;
+    white-space: normal;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 375px) {
+  .container {
+    padding: 0 16px;
+  }
+
+  /* Even smaller cards */
+  .pricing-card,
+  .testimonial-card,
+  .service-card {
+    padding: 20px 16px !important;
+  }
+
+  /* Compact pricing */
+  .amount {
+    font-size: 36px !important;
+  }
+
+  .currency {
+    font-size: 20px;
+  }
+}
+
+/* =============================================
+   BACK TO TOP BUTTON
+   ============================================= */
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(255, 102, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 999;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--color-primary-light);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(255, 102, 0, 0.4);
+}
+
+.back-to-top:active {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+  }
+}
+
+/* =============================================
+   MODERN FOOTER STYLES
+   ============================================= */
+.footer-modern {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 80px 0 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-modern::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 102, 0, 0.5),
+    transparent
+  );
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 50px;
+}
+
+.footer-brand-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: white;
+}
+
+.footer-logo-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.footer-brand-name {
+  font-family: var(--font-primary);
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+}
+
+.footer-tagline {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+.footer-social-icons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.social-icon:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 102, 0, 0.3);
+}
+
+.footer-links-col {
+  display: block;
+  min-height: 100px;
+}
+
+.footer-links-col h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.footer-links-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links-col li {
+  margin-bottom: 14px;
+}
+
+.footer-links-col a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+}
+
+.footer-links-col a::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.footer-links-col a:hover {
+  color: var(--color-primary);
+  transform: translateX(3px);
+}
+
+.footer-links-col a:hover::after {
+  width: 100%;
+}
+
+.footer-bottom-bar {
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-bottom-bar p {
+  margin: 0;
+}
+
+.heart {
+  color: var(--color-primary);
+  display: inline-block;
+  animation: heartbeat 1.3s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  10%,
+  30% {
+    transform: scale(0.9);
+  }
+  20%,
+  40%,
+  50%,
+  60%,
+  70%,
+  80% {
+    transform: scale(1.1);
+  }
+}
+
+/* Responsive Footer */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer-brand-section {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-modern {
+    padding: 60px 0 30px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .footer-social-icons {
+    justify-content: flex-start;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .social-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .footer-logo-img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .footer-brand-name {
+    font-size: 24px;
   }
 }

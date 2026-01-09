@@ -13,6 +13,11 @@ async function loadFragments() {
 
     // Initialize navigation after loading
     initializeNavigation();
+
+    // Initialize back to top button with delay
+    setTimeout(() => {
+      initializeBackToTop();
+    }, 100);
   } catch (error) {
     console.error("Error loading fragments:", error);
   }
@@ -62,6 +67,30 @@ function initializeNavigation() {
       document.body.style.overflow = "";
     }
   });
+}
+
+// Back to Top Button
+function initializeBackToTop() {
+  const backToTopBtn = document.getElementById("backToTop");
+
+  if (backToTopBtn) {
+    // Show/hide button based on scroll position
+    window.addEventListener("scroll", () => {
+      if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add("show");
+      } else {
+        backToTopBtn.classList.remove("show");
+      }
+    });
+
+    // Scroll to top when clicked
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    });
+  }
 }
 
 // Updated Preloader for Apple-style timing

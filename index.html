@@ -10,7 +10,10 @@
     />
 
     <!-- specific security headers -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.stripe.com; connect-src 'self' https://api.stripe.com https://maps.googleapis.com;" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://*.stripe.com; connect-src 'self' https://api.stripe.com https://maps.googleapis.com;"
+    />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="logo.png" />
@@ -23,69 +26,94 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://khushaankgupta.qzz.io/" />
-    <meta property="og:title" content="Khushaank Gupta | Digital Consultant & Web Developer" />
-    <meta property="og:description" content="Khushaank Gupta bridges business strategy with high-performance web development. Consulting, AI integration, and custom digital solutions." />
-    <meta property="og:image" content="https://khushaankgupta.qzz.io/khush.png" />
+    <meta
+      property="og:title"
+      content="Khushaank Gupta | Digital Consultant & Web Developer"
+    />
+    <meta
+      property="og:description"
+      content="Khushaank Gupta bridges business strategy with high-performance web development. Consulting, AI integration, and custom digital solutions."
+    />
+    <meta
+      property="og:image"
+      content="https://khushaankgupta.qzz.io/khush.png"
+    />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://khushaankgupta.qzz.io/" />
-    <meta property="twitter:title" content="Khushaank Gupta | Digital Consultant & Web Developer" />
-    <meta property="twitter:description" content="Khushaank Gupta bridges business strategy with high-performance web development. Consulting, AI integration, and custom digital solutions." />
-    <meta property="twitter:image" content="https://khushaankgupta.qzz.io/khush.png" />
+    <meta
+      property="twitter:title"
+      content="Khushaank Gupta | Digital Consultant & Web Developer"
+    />
+    <meta
+      property="twitter:description"
+      content="Khushaank Gupta bridges business strategy with high-performance web development. Consulting, AI integration, and custom digital solutions."
+    />
+    <meta
+      property="twitter:image"
+      content="https://khushaankgupta.qzz.io/khush.png"
+    />
 
     <!-- JSON-LD Structured Data for AI & Search -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Person",
-          "@id": "https://khushaankgupta.qzz.io/#person",
-          "name": "Khushaank Gupta",
-          "url": "https://khushaankgupta.qzz.io/",
-          "image": "https://khushaankgupta.qzz.io/khush.png",
-          "jobTitle": "Digital Consultant & Web Developer",
-          "description": "B.Com graduate and CA student specializing in bridging business strategy with high-performance web development and AI integration.",
-          "sameAs": [
-            "https://www.linkedin.com/in/khushaank/",
-            "https://x.com/Khushaankgupta/",
-            "https://github.com/khushaank",
-            "https://youtube.com/@khushaankgupta"
-          ],
-          "knowsAbout": ["Web Development", "Digital Strategy", "AI Integration", "React", "SEO", "Business Analysis"]
-        },
-        {
-          "@type": "ProfessionalService",
-          "@id": "https://khushaankgupta.qzz.io/#service",
-          "name": "Khushaank Gupta Services",
-          "url": "https://khushaankgupta.qzz.io/",
-          "logo": "https://khushaankgupta.qzz.io/logo.png",
-          "image": "https://khushaankgupta.qzz.io/khush.png",
-          "description": "Premium web development and digital consulting services.",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Delhi",
-            "addressCountry": "IN"
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://khushaankgupta.qzz.io/#person",
+            "name": "Khushaank Gupta",
+            "url": "https://khushaankgupta.qzz.io/",
+            "image": "https://khushaankgupta.qzz.io/khush.png",
+            "jobTitle": "Digital Consultant & Web Developer",
+            "description": "B.Com graduate and CA student specializing in bridging business strategy with high-performance web development and AI integration.",
+            "sameAs": [
+              "https://www.linkedin.com/in/khushaank/",
+              "https://x.com/Khushaankgupta/",
+              "https://github.com/khushaank",
+              "https://youtube.com/@khushaankgupta"
+            ],
+            "knowsAbout": [
+              "Web Development",
+              "Digital Strategy",
+              "AI Integration",
+              "React",
+              "SEO",
+              "Business Analysis"
+            ]
           },
-          "priceRange": "₹₹",
-          "founder": {
-            "@id": "https://khushaankgupta.qzz.io/#person"
+          {
+            "@type": "ProfessionalService",
+            "@id": "https://khushaankgupta.qzz.io/#service",
+            "name": "Khushaank Gupta Services",
+            "url": "https://khushaankgupta.qzz.io/",
+            "logo": "https://khushaankgupta.qzz.io/logo.png",
+            "image": "https://khushaankgupta.qzz.io/khush.png",
+            "description": "Premium web development and digital consulting services.",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Delhi",
+              "addressCountry": "IN"
+            },
+            "priceRange": "₹₹",
+            "founder": {
+              "@id": "https://khushaankgupta.qzz.io/#person"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://khushaankgupta.qzz.io/#website",
+            "url": "https://khushaankgupta.qzz.io/",
+            "name": "Khushaank Gupta Portfolio",
+            "description": "Portfolio and services of Khushaank Gupta.",
+            "publisher": {
+              "@id": "https://khushaankgupta.qzz.io/#person"
+            },
+            "inLanguage": "en-US"
           }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://khushaankgupta.qzz.io/#website",
-          "url": "https://khushaankgupta.qzz.io/",
-          "name": "Khushaank Gupta Portfolio",
-          "description": "Portfolio and services of Khushaank Gupta.",
-          "publisher": {
-            "@id": "https://khushaankgupta.qzz.io/#person"
-          },
-          "inLanguage": "en-US"
-        }
-      ]
-    }
+        ]
+      }
     </script>
 
     <!-- Fonts -->
@@ -576,7 +604,9 @@
 
         <!-- Consultation Services -->
         <div class="pricing-category">
-          <h3 class="pricing-category-title" data-aos="fade-up">💬 Consultation & Training</h3>
+          <h3 class="pricing-category-title" data-aos="fade-up">
+            💬 Consultation & Training
+          </h3>
           <div class="pricing-grid pricing-grid-small">
             <!-- Consultation Plan moved here with discount -->
             <div
@@ -598,19 +628,37 @@
               <ul class="pricing-features">
                 <li>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="#FF6600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
                   <span>1-on-1 Video Call</span>
                 </li>
                 <li>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="#FF6600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
                   <span>Strategy & Planning</span>
                 </li>
                 <li>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="#FF6600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
                   <span>Tech Stack Review</span>
                 </li>
@@ -624,7 +672,7 @@
               data-aos="fade-up"
               data-aos-delay="150"
             >
-              <div class="discount-badge">30% OFF</div>
+              <div class="discount-badge">25% OFF</div>
               <div class="pricing-header">
                 <h3>AI Training</h3>
                 <p>Master AI tools for productivity</p>
@@ -638,38 +686,60 @@
               <ul class="pricing-features">
                 <li>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="#FF6600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
                   <span>ChatGPT, Gemini, Claude</span>
                 </li>
                 <li>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="#FF6600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
-                  <span>1 Month AI Fiesta FREE
-                    <span class="tooltip-trigger">?
-                      <span class="tooltip-content">All text-to-text tools included</span>
+                  <span
+                    >1 Month AI Fiesta FREE
+                    <span class="tooltip-trigger"
+                      >?
+                      <span class="tooltip-content">Min 3hr Workshop</span>
                     </span>
                   </span>
                 </li>
-                <li style="font-size: 13px; color: var(--color-primary); justify-content: center; margin-top: -10px; margin-bottom: 10px;">
-                  (Min 3hr Workshop)
-                </li>
+
                 <li>
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="#FF6600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
                   </svg>
                   <span>Prompt Engineering</span>
                 </li>
               </ul>
-              <a href="#contact" class="pricing-btn glass-button">Start Learning</a>
+              <a href="#contact" class="pricing-btn glass-button"
+                >Start Learning</a
+              >
             </div>
           </div>
         </div>
 
         <!-- Website Building -->
         <div class="pricing-category">
-          <h3 class="pricing-category-title" data-aos="fade-up">🚀 Website Building</h3>
+          <h3 class="pricing-category-title" data-aos="fade-up">
+            🚀 Website Building
+          </h3>
           <div class="pricing-grid">
             <div
               class="pricing-card glass-card"
@@ -686,302 +756,324 @@
                 <span class="currency">₹</span>
                 <span class="amount">15,000</span>
               </div>
-            <ul class="pricing-features">
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Single Page Website</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z" stroke="#FF6600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>1 Free Professional Email</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Mobile Responsive</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Basic SEO Setup</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>1 Week Delivery</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>2-4 Years Domain & Hosting</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>12/7 Priority Support</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Support for Everything</span>
-              </li>
-            </ul>
-            <a href="javascript:void(0)" onclick="initiateStripeCheckout('Starter', 15000)" class="pricing-btn glass-button">Get Started</a>
-          </div>
-          
-          <div
-            class="pricing-card glass-card featured"
-            data-aos="fade-up"
-            data-aos-delay="200"
-          >
-            <div class="pricing-badge glass-effect">Most Popular</div>
-            <div class="pricing-header">
-              <h3>Business</h3>
-              <p>Ideal for growing businesses</p>
+              <ul class="pricing-features">
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Single Page Website</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>1 Free Professional Email</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Mobile Responsive</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Basic SEO Setup</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>1 Week Delivery</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>2-4 Years Domain & Hosting</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>12/7 Priority Support</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Support for Everything</span>
+                </li>
+              </ul>
+              <a
+                href="javascript:void(0)"
+                onclick="initiateStripeCheckout('Starter', 15000)"
+                class="pricing-btn glass-button"
+                >Get Started</a
+              >
             </div>
-            <div class="pricing-price">
-              <span class="currency">₹</span>
-              <span class="amount">25,000</span>
+
+            <div
+              class="pricing-card glass-card featured"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
+              <div class="pricing-badge glass-effect">Most Popular</div>
+              <div class="pricing-header">
+                <h3>Business</h3>
+                <p>Ideal for growing businesses</p>
+              </div>
+              <div class="pricing-price">
+                <span class="currency">₹</span>
+                <span class="amount">25,000</span>
+              </div>
+              <ul class="pricing-features">
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Up to 5 Pages</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>1 Free Professional Email</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Free SSL Certificate</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Supabase/Backend Integration</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Advanced SEO</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Basic AI Chatbot</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>2 Weeks Delivery</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>2-4 Years Domain & Hosting</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>12/7 Priority Support</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Support for Everything</span>
+                </li>
+              </ul>
+              <a
+                href="javascript:void(0)"
+                onclick="initiateStripeCheckout('Business', 25000)"
+                class="pricing-btn glass-button"
+                >Get Started</a
+              >
             </div>
-            <ul class="pricing-features">
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Up to 5 Pages</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>1 Free Professional Email</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Free SSL Certificate</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Supabase/Backend Integration</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Advanced SEO</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Basic AI Chatbot</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>2 Weeks Delivery</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>2-4 Years Domain & Hosting</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>12/7 Priority Support</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Support for Everything</span>
-              </li>
-            </ul>
-            <a href="javascript:void(0)" onclick="initiateStripeCheckout('Business', 25000)" class="pricing-btn glass-button">Get Started</a>
-          </div>
-          <div
-            class="pricing-card glass-card"
-            data-aos="fade-up"
-            data-aos-delay="300"
-          >
-            <div class="pricing-header">
-              <h3>Enterprise</h3>
-              <p>For complex projects and applications</p>
+            <div
+              class="pricing-card glass-card"
+              data-aos="fade-up"
+              data-aos-delay="300"
+            >
+              <div class="pricing-header">
+                <h3>Enterprise</h3>
+                <p>For complex projects and applications</p>
+              </div>
+              <div class="pricing-price">
+                <span class="amount custom">Custom</span>
+              </div>
+              <ul class="pricing-features">
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Full Web Application</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Advanced AI Integration</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Custom Branding</span>
+                </li>
+                <li>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
+                      stroke="#FF6600"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>Priority Support</span>
+                </li>
+              </ul>
+              <a
+                href="javascript:void(0)"
+                onclick="initiateStripeCheckout('Enterprise', 0)"
+                class="pricing-btn glass-button"
+                >Contact Me</a
+              >
             </div>
-            <div class="pricing-price">
-              <span class="amount custom">Custom</span>
-            </div>
-            <ul class="pricing-features">
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Full Web Application</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Advanced AI Integration</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Custom Branding</span>
-              </li>
-              <li>
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M7 10L9 12L13 8M19 10C19 14.9706 14.9706 19 10 19C5.02944 19 1 14.9706 1 10C1 5.02944 5.02944 1 10 1C14.9706 1 19 5.02944 19 10Z"
-                    stroke="#FF6600"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <span>Priority Support</span>
-              </li>
-            </ul>
-            <a href="javascript:void(0)" onclick="initiateStripeCheckout('Enterprise', 0)" class="pricing-btn glass-button">Contact Me</a>
           </div>
         </div>
       </div>
@@ -1056,20 +1148,14 @@
                 target="_blank"
                 class="social-link glass-effect"
               >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path
-                    d="M16 2H4C2.89543 2 2 2.89543 2 4V16C2 17.1046 2.89543 18 4 18H16C17.1046 18 18 17.1046 18 16V4C18 2.89543 17.1046 2 16 2Z"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M7 9V14M7 6V6.01M11 14V11C11 10.4696 11.2107 9.96086 11.5858 9.58579C11.9609 9.21071 12.4696 9 13 9C13.5304 9 14.0391 9.21071 14.4142 9.58579C14.7893 9.96086 15 10.4696 15 11V14"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
                   />
                 </svg>
               </a>
@@ -1078,13 +1164,14 @@
                 target="_blank"
                 class="social-link glass-effect"
               >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
                   <path
-                    d="M15 2L9 8M9 8L3 2M9 8V18"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
                   />
                 </svg>
               </a>
