@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khushaank Gupta</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fdfcfa;
+            --text: #1a1816;
+            --accent: #d4a373;
+            --accent-dark: #b8845f;
+            --border: #e8e3dd;
+            --highlight: #f4efe8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Karla', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            z-index: 1000;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1000px; /* Slimmer container for better readability */
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 8rem 0 4rem 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .greeting {
+            font-size: 1.1rem;
+            color: var(--accent-dark);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.2s forwards;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.4s forwards;
+        }
+
+        .title-accent {
+            color: var(--accent-dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            color: #6b6560;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.6s forwards;
+        }
+
+        .education-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
+        }
+
+        .card {
+            background: var(--highlight);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 4px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: var(--accent-dark);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .about-section {
+            padding: 6rem 0;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 1.2s forwards;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+
+        .about-content {
+            max-width: 800px;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #4a4540;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Skills Section Redesign */
+        .skills-section {
+            padding: 6rem 0;
+            border-top: 1px solid var(--border);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 1.4s forwards;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem 4rem;
+        }
+
+        .skill-item {
+            position: relative;
+            padding-left: 1.5rem;
+            border-left: 1px solid var(--border);
+            transition: border-color 0.3s ease;
+        }
+
+        .skill-item:hover {
+            border-left-color: var(--accent);
+        }
+
+        .skill-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .skill-item p {
+            font-size: 0.95rem;
+            color: #6b6560;
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            padding: 6rem 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.8rem 1.8rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+        }
+
+        footer {
+            padding: 4rem 0;
+            text-align: left;
+            color: #9b9590;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .decorative-element {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 163, 115, 0.08), transparent 70%);
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            h1 { font-size: 3rem; }
+            .hero { padding-top: 4rem; }
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .cursor-dot { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <div class="grain"></div>
+    <div class="cursor-dot"></div>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="decorative-element"></div>
+                <div class="hero-content">
+                    <div class="greeting">Hello, I'm</div>
+                    <h1>Khushaank <span class="title-accent">Gupta</span></h1>
+                    <p class="subtitle">Aspiring chartered accountant pursuing excellence in finance and commerce through professional certification and academic rigor.</p>
+                    
+                    <div class="education-cards">
+                        <div class="card">
+                            <div class="card-subtitle">Qualification</div>
+                            <div class="card-title">ACCA</div>
+                            <div class="card-description">Association of Chartered Certified Accountants – globally recognized professional accounting certification.</div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-subtitle">Delhi University</div>
+                            <div class="card-title">B.Com</div>
+                            <div class="card-description">Bachelor of Commerce from one of India's most prestigious institutions for commerce education.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <p>I am a dedicated finance professional currently pursuing the ACCA qualification alongside my Bachelor of Commerce degree from Delhi University. My academic journey reflects a strong commitment to mastering the principles of accounting, finance, and business management.</p>
+                    <p>With a passion for financial analysis and strategic thinking, I am building a solid foundation in both theoretical knowledge and practical application.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="skills-section">
+            <div class="container">
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <h3>Financial Accounting</h3>
+                        <p>Comprehensive understanding of accounting principles, financial statements, and reporting standards.</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Management Accounting</h3>
+                        <p>Cost analysis, budgeting, and performance evaluation for strategic decision-making.</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Financial Analysis</h3>
+                        <p>Analyzing financial data to provide insights and support business planning.</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Audit & Assurance</h3>
+                        <p>Understanding of auditing standards, risk assessment, and internal controls.</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Taxation</h3>
+                        <p>Knowledge of tax laws, compliance, and tax planning strategies.</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Business Strategy</h3>
+                        <p>Strategic thinking and analytical approach to complex business challenges.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <h2 class="section-title">Let's Connect</h2>
+                <div class="contact-links">
+                    <a href="mailto:khushaank@example.com" class="contact-link">Email</a>
+                    <a href="https://linkedin.com/in/khushaankgupta" class="contact-link" target="_blank">LinkedIn</a>
+                    <a href="tel:+91" class="contact-link">Phone</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Khushaank Gupta. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const cursorDot = document.querySelector('.cursor-dot');
+        if (window.matchMedia("(min-width: 1024px)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                cursorDot.style.left = e.clientX + 'px';
+                cursorDot.style.top = e.clientY + 'px';
+            });
+        }
+
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
