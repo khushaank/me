@@ -7,7 +7,7 @@ export interface PostContent {
 }
 
 export interface BlogPost {
-  id: number;
+  id: string | number;
   year: string;
   image: string;
   zh: PostContent;

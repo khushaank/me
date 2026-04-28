@@ -45,7 +45,7 @@ export default function PostDetail({ posts }: PostDetailProps) {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['posts-v2'] });
       navigate(`/post/${id}`);
     },
   });
@@ -203,7 +203,6 @@ export default function PostDetail({ posts }: PostDetailProps) {
 
   // VIEW MODE
   const content = post[language];
-  const paragraphs = content.detailContent.split("\n\n");
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--bg-warm-white)" }}>
@@ -249,13 +248,11 @@ export default function PostDetail({ posts }: PostDetailProps) {
         </div>
 
         {/* Content */}
-        <div className="space-y-5">
-          {paragraphs.map((para, idx) => (
-            <p key={idx} style={{ fontSize: "13px", lineHeight: 1.85, color: "var(--text-charcoal)", whiteSpace: "pre-line" }}>
-              {para}
-            </p>
-          ))}
-        </div>
+        <div 
+          className="article-content"
+          style={{ fontSize: "13px", lineHeight: 1.85, color: "var(--text-charcoal)" }}
+          dangerouslySetInnerHTML={{ __html: content.detailContent }}
+        />
 
         {/* Back link */}
         <div style={{ borderTop: "1px solid var(--border-light)", marginTop: "48px", paddingTop: "24px" }}>

@@ -17,64 +17,24 @@ interface MiddleColumnProps {
 
 export default function MiddleColumn({ posts }: MiddleColumnProps) {
   const columnRef = useRef<HTMLDivElement>(null);
-  const [hoveredImage, setHoveredImage] = useState<number | null>(null);
+  const [hoveredImage, setHoveredImage] = useState<string | number | null>(null);
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { isAdmin } = useAuth();
   const { leftOpen, rightOpen } = useSidebar();
   const queryClient = useQueryClient();
 
+  useEffect(() => {
+    console.log("MiddleColumn posts:", posts);
+  }, [posts]);
+
   const deletePost = useMutation({
-    mutationFn: async ({ id }: { id: number }) => {
+    mutationFn: async ({ id }: { id: string | number }) => {
       const { error } = await supabase.from('posts').delete().eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['posts'] }); },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['posts-v2'] }); },
   });
-
-
-  /* Entrance animations for posts */
-  useEffect(() => {
-    if (!columnRef.current || posts.length === 0) return;
-    const articles = columnRef.current.querySelectorAll(".post-card");
-    const triggers: ScrollTrigger[] = [];
-    articles.forEach((article, i) => {
-      gsap.set(article, { opacity: 0, y: 30 });
-      const tween = gsap.to(article, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "power2.out",
-        delay: i * 0.08,
-        scrollTrigger: {
-          trigger: article,
-          start: "top 92%",
-          toggleActions: "play none none none",
-        },
-      });
-      if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
-    });
-    return () => { triggers.forEach((t) => t.kill()); };
-  }, [posts]);
-
-  /* Image scroll reveal */
-  useEffect(() => {
-    if (!columnRef.current) return;
-    const images = columnRef.current.querySelectorAll(".blog-image");
-    const triggers: ScrollTrigger[] = [];
-    images.forEach((img) => {
-      gsap.set(img, { opacity: 0, scale: 1.02 });
-      const tween = gsap.to(img, {
-        opacity: 1,
-        scale: 1,
-        duration: 0.7,
-        ease: "power2.out",
-        scrollTrigger: { trigger: img, start: "top 88%", toggleActions: "play none none none" },
-      });
-      if (tween.scrollTrigger) triggers.push(tween.scrollTrigger);
-    });
-    return () => { triggers.forEach((t) => t.kill()); };
-  }, [posts]);
 
   const sectionTitle = "MATERIAL / THOUGHTS";
 
@@ -107,7 +67,7 @@ export default function MiddleColumn({ posts }: MiddleColumnProps) {
               lineHeight: 1.4,
             }}
           >
-            {sectionTitle}
+            {sectionTitle} ({posts.length})
           </h2>
           {isAdmin && (
             <button
@@ -190,20 +150,19 @@ export default function MiddleColumn({ posts }: MiddleColumnProps) {
                   </p>
 
                   {/* Excerpt */}
-                  <p
+                  <div
                     style={{
                       fontSize: "11px",
                       color: "var(--text-grey)",
                       lineHeight: 1.65,
                       opacity: 0.7,
                       display: "-webkit-box",
-                      WebkitLineClamp: 2,
+                      WebkitLineClamp: 3,
                       WebkitBoxOrient: "vertical",
                       overflow: "hidden",
                     }}
-                  >
-                    {content.content}
-                  </p>
+                    dangerouslySetInnerHTML={{ __html: content.content }}
+                  />
                 </div>
 
                 {/* Admin actions */}

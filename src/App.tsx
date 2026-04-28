@@ -222,36 +222,35 @@ function PostPage({ posts, isLoading }: { posts: BlogPost[], isLoading: boolean 
 /* ------------------------------------------------------------------ */
 export default function App() {
   const { data: posts = [], isLoading } = useQuery({
-    queryKey: ['posts'],
+    queryKey: ['posts-v2'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('posts')
-        .select('*')
-        .order('sort_order', { ascending: false })
-        .order('created_at', { ascending: false });
+        .select('id, title, excerpt, content, image, image_url, views, created_at, slug, claps, file_url, year, sort_order, clicks_count, zh_title, zh_subtitle, zh_collection, zh_content, zh_detail_content, en_title, en_subtitle, en_collection, en_content, en_detail_content');
       
       if (error) throw error;
       
       return (data || []).map((p: any) => ({
         id: p.id,
-        year: p.year || new Date(p.created_at).getFullYear().toString(),
+        year: p.year || "2024",
         image: p.image || p.image_url || "/images/hero-art.jpg",
         zh: {
-          title: p.zh_title || p.title || "",
+          title: p.zh_title || p.title || "Untitled",
           subtitle: p.zh_subtitle || p.excerpt || "",
-          collection: p.zh_collection || p.category || "",
+          collection: p.zh_collection || p.category || "General",
           content: p.zh_content || p.content || "",
           detailContent: p.zh_detail_content || p.content || "",
         },
         en: {
-          title: p.en_title || p.title || "",
+          title: p.en_title || p.title || "Untitled",
           subtitle: p.en_subtitle || p.excerpt || "",
-          collection: p.en_collection || p.category || "",
+          collection: p.en_collection || p.category || "General",
           content: p.en_content || p.content || "",
           detailContent: p.en_detail_content || p.content || "",
         }
       })) as BlogPost[];
     }
+
   });
 
   return (
