@@ -1,18 +1,32 @@
 import { useNavigate } from "react-router";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { trpc } from "@/providers/trpc";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/lib/supabase";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function Guestbook() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { isAdmin } = useAuth();
-  const { data: messages, isLoading } = trpc.contact.list.useQuery();
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
-  const deleteMutation = trpc.contact.delete.useMutation({
-    onSuccess: () => utils.contact.list.invalidate(),
+  const { data: messages = [], isLoading } = useQuery({
+    queryKey: ['messages'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('messages').select('*').order('created_at', { ascending: false });
+      if (error) throw error;
+      return data;
+    }
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('messages').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['messages'] }),
+  });
+
 
   const t = {
     zh: {
@@ -116,8 +130,8 @@ export default function Guestbook() {
                   </span>
                   <div className="flex items-center gap-3">
                     <span style={{ fontSize: "11px", color: "var(--text-grey)" }}>
-                      {msg.createdAt
-                        ? new Date(msg.createdAt).toLocaleDateString(
+                      {msg.created_at
+                        ? new Date(msg.created_at).toLocaleDateString(
                             language === "zh" ? "zh-CN" : "en-US",
                           )
                         : ""}

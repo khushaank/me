@@ -4,19 +4,21 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useSidebar } from "@/contexts/SidebarContext";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import ImageUpload from "./ImageUpload";
 
 gsap.registerPlugin(ScrollTrigger);
 
 interface CVItem {
+  id: string;
   category: string;
   title: string;
   subtitle?: string;
   year: string;
 }
 
-const fallbackCvData: Record<string, CVItem[]> = {
+const fallbackCvData: Record<string, Omit<CVItem, 'id'>[]> = {
   zh: [
     { category: "Education", title: "斯坦福大学", subtitle: "计算机科学 / 硕士", year: "2018 - 2020" },
     { category: "Education", title: "印度理工学院德里分校", subtitle: "电子工程 / 学士", year: "2014 - 2018" },
@@ -55,12 +57,56 @@ export default function RightColumn() {
   const { rightOpen, closeAll } = useSidebar();
   const panelRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
-  const { data: cvDataDb } = trpc.cv.list.useQuery();
-  const createCv = trpc.cv.create.useMutation({ onSuccess: () => utils.cv.list.invalidate() });
-  const updateCv = trpc.cv.update.useMutation({ onSuccess: () => utils.cv.list.invalidate() });
-  const deleteCv = trpc.cv.delete.useMutation({ onSuccess: () => utils.cv.list.invalidate() });
+  const { data: cvDataDb = [] } = useQuery({
+    queryKey: ['cvEntries'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('cv_entries').select('*').order('sort_order');
+      if (error) return [];
+      return data;
+    }
+  });
+
+  const createCv = useMutation({
+    mutationFn: async (vars: any) => {
+      const { error } = await supabase.from('cv_entries').insert([{
+        category: vars.category,
+        zh_title: vars.zhTitle,
+        zh_subtitle: vars.zhSubtitle,
+        en_title: vars.enTitle,
+        en_subtitle: vars.enSubtitle,
+        year: vars.year,
+        sort_order: vars.sortOrder
+      }]);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cvEntries'] }),
+  });
+
+  const updateCv = useMutation({
+    mutationFn: async (vars: any) => {
+      const { error } = await supabase.from('cv_entries').update({
+        category: vars.category,
+        zh_title: vars.zhTitle,
+        zh_subtitle: vars.zhSubtitle,
+        en_title: vars.enTitle,
+        en_subtitle: vars.enSubtitle,
+        year: vars.year
+      }).eq('id', vars.id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cvEntries'] }),
+  });
+
+  const deleteCv = useMutation({
+    mutationFn: async ({ id }: { id: string }) => {
+      const { error } = await supabase.from('cv_entries').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['cvEntries'] }),
+  });
+
 
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ category: "", zhTitle: "", zhSubtitle: "", enTitle: "", enSubtitle: "", year: "" });
@@ -96,14 +142,14 @@ export default function RightColumn() {
   const useDb = dbItems.length > 0;
 
   const items = useDb
-    ? dbItems.map((e) => ({
+    ? dbItems.map((e: any) => ({
         category: e.category,
-        title: language === "zh" ? e.zhTitle : e.enTitle,
-        subtitle: language === "zh" ? (e.zhSubtitle || undefined) : (e.enSubtitle || undefined),
+        title: language === "zh" ? e.zh_title : e.en_title,
+        subtitle: language === "zh" ? (e.zh_subtitle || undefined) : (e.en_subtitle || undefined),
         year: e.year,
         id: e.id,
       }))
-    : fallbackCvData[language].map((e, i) => ({ ...e, id: i }));
+    : fallbackCvData[language].map((e, i) => ({ ...e, id: i.toString() }));
 
   const sections = items.reduce<Record<string, typeof items>>((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
@@ -114,17 +160,17 @@ export default function RightColumn() {
   const sectionOrder = ["Education", "Employment", "Investment", "Writing", "Speaking", "Featured"];
 
   const startEdit = (item: (typeof items)[0]) => {
-    const dbItem = dbItems.find((d) => d.id === item.id);
+    const dbItem = dbItems.find((d: any) => d.id === item.id);
     if (dbItem) {
       setEditForm({
         category: dbItem.category,
-        zhTitle: dbItem.zhTitle,
-        zhSubtitle: dbItem.zhSubtitle || "",
-        enTitle: dbItem.enTitle,
-        enSubtitle: dbItem.enSubtitle || "",
+        zhTitle: dbItem.zh_title,
+        zhSubtitle: dbItem.zh_subtitle || "",
+        enTitle: dbItem.en_title,
+        enSubtitle: dbItem.en_subtitle || "",
         year: dbItem.year,
       });
-      setEditingId(item.id);
+      setEditingId(item.id as any);
       setIsAdding(false);
     }
   };
@@ -265,17 +311,32 @@ export default function RightColumn() {
 /* ------------------------------------------------------------------ */
 function AvatarSection() {
   const { isAdmin } = useAuth();
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
   const imageRef = useRef<HTMLImageElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const [editingAvatar, setEditingAvatar] = useState(false);
 
-  const { data: settings } = trpc.settings.get.useQuery();
-  const updateSettings = trpc.settings.update.useMutation({
-    onSuccess: () => utils.settings.get.invalidate(),
+  const { data: settings } = useQuery({
+    queryKey: ['siteSettings'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('site_settings').select('*').eq('id', 1).single();
+      if (error) return null;
+      return data;
+    }
   });
 
-  const avatarUrl = settings?.avatarImage || "/images/portrait.jpg";
+  const updateSettings = useMutation({
+    mutationFn: async (vars: any) => {
+      const { error } = await supabase.from('site_settings').update({
+        avatar_image: vars.avatarImage
+      }).eq('id', 1);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['siteSettings'] }),
+  });
+
+
+  const avatarUrl = settings?.avatar_image || "/images/portrait.jpg";
 
   useEffect(() => {
     if (!frameRef.current || !imageRef.current) return;

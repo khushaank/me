@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -8,53 +8,55 @@ export default function Login() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { isAuthenticated } = useAuth();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const loginMutation = trpc.auth.login.useMutation({
-    onSuccess: () => {
-      window.location.href = "/";
-    },
-    onError: (err) => {
-      setError(err.message);
-    },
-  });
+  const [isPending, setIsPending] = useState(false);
 
   if (isAuthenticated) {
     navigate("/");
     return null;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!username.trim() || !password.trim()) return;
-    loginMutation.mutate({
-      username: username.trim(),
+    if (!email.trim() || !password.trim()) return;
+    
+    setIsPending(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
       password: password.trim(),
     });
+    
+    if (error) {
+      setError(error.message);
+      setIsPending(false);
+    } else {
+      window.location.href = "/";
+    }
   };
 
   const t = {
     zh: {
       title: "管理员登入",
-      username: "用户名",
+      username: "邮箱",
       password: "密码",
       submit: "登入",
       submitting: "登入中...",
-      hint: "默认账户：admin / 123456",
+      hint: "使用 Supabase 账户登入",
     },
     en: {
       title: "Admin Login",
-      username: "Username",
+      username: "Email",
       password: "Password",
       submit: "Log In",
       submitting: "Logging in...",
-      hint: "Default: admin / 123456",
+      hint: "Use your Supabase account",
     },
   };
   const s = t[language];
+
 
   return (
     <div
@@ -95,10 +97,10 @@ export default function Login() {
               {s.username}
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               style={{
                 width: "100%",
                 background: "transparent",
@@ -147,7 +149,7 @@ export default function Login() {
 
           <button
             type="submit"
-            disabled={loginMutation.isPending}
+            disabled={isPending}
             style={{
               width: "100%",
               padding: "12px",
@@ -156,12 +158,12 @@ export default function Login() {
               color: "var(--bg-warm-white)",
               background: "var(--text-charcoal)",
               border: "none",
-              cursor: loginMutation.isPending ? "wait" : "pointer",
-              opacity: loginMutation.isPending ? 0.7 : 1,
+              cursor: isPending ? "wait" : "pointer",
+              opacity: isPending ? 0.7 : 1,
               letterSpacing: "0.05em",
             }}
           >
-            {loginMutation.isPending ? s.submitting : s.submit}
+            {isPending ? s.submitting : s.submit}
           </button>
         </form>
 

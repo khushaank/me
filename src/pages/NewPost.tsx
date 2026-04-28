@@ -2,14 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ImageUpload from "@/components/ImageUpload";
 
 export default function NewPost() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { isAdmin } = useAuth();
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
   const [form, setForm] = useState({
     year: "2024",
@@ -18,12 +19,31 @@ export default function NewPost() {
     enTitle: "", enSubtitle: "", enCollection: "", enContent: "", enDetailContent: "",
   });
 
-  const createPost = trpc.blog.create.useMutation({
+  const createPost = useMutation({
+    mutationFn: async (vars: any) => {
+      const { error } = await supabase.from('posts').insert([{
+        year: vars.year,
+        image: vars.image,
+        sort_order: vars.sortOrder,
+        zh_title: vars.zhTitle,
+        zh_subtitle: vars.zhSubtitle,
+        zh_collection: vars.zhCollection,
+        zh_content: vars.zhContent,
+        zh_detail_content: vars.zhDetailContent,
+        en_title: vars.enTitle,
+        en_subtitle: vars.enSubtitle,
+        en_collection: vars.enCollection,
+        en_content: vars.enContent,
+        en_detail_content: vars.enDetailContent
+      }]);
+      if (error) throw error;
+    },
     onSuccess: () => {
-      utils.blog.list.invalidate();
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
       navigate("/");
     },
   });
+
 
   if (!isAdmin) {
     navigate("/");

@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface ImageUploadProps {
   value: string;
@@ -24,21 +25,22 @@ export default function ImageUpload({ value, onChange, label, variant = "dark" }
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+      const filePath = `uploads/${fileName}`;
 
-      const resp = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
+      const { error: uploadError } = await supabase.storage
+        .from('assets')
+        .upload(filePath, file);
 
-      const data = await resp.json();
-      if (data.url) {
-        onChange(data.url);
-        setPreview(null);
-      } else {
-        alert("Upload failed: " + (data.error || "Unknown error"));
-      }
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('assets')
+        .getPublicUrl(filePath);
+
+      onChange(publicUrl);
+      setPreview(null);
     } catch (err) {
       alert("Upload failed: " + (err instanceof Error ? err.message : "Network error"));
     } finally {
@@ -46,6 +48,7 @@ export default function ImageUpload({ value, onChange, label, variant = "dark" }
       if (inputRef.current) inputRef.current.value = "";
     }
   };
+
 
   const handleRemove = () => {
     onChange("");

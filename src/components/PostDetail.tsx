@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
-import { trpc } from "@/providers/trpc";
-import type { BlogPost } from "../data/blogPosts";
+import { supabase } from "@/lib/supabase";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { BlogPost } from "../../contracts/blog";
 import ImageUpload from "./ImageUpload";
 
 interface PostDetailProps {
@@ -19,15 +20,32 @@ export default function PostDetail({ posts }: PostDetailProps) {
   const imageRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
   const { isAdmin } = useAuth();
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
   const isEditMode = searchParams.get("mode") === "edit" && isAdmin;
 
-  const post = posts.find((p) => p.id === Number(id));
+  const post = posts.find((p) => String(p.id) === String(id));
 
-  const updatePost = trpc.blog.update.useMutation({
+  const updatePost = useMutation({
+    mutationFn: async (vars: any) => {
+      const { error } = await supabase.from('posts').update({
+        year: vars.year,
+        image: vars.image,
+        zh_title: vars.zhTitle,
+        zh_subtitle: vars.zhSubtitle,
+        zh_collection: vars.zhCollection,
+        zh_content: vars.zhContent,
+        zh_detail_content: vars.zhDetailContent,
+        en_title: vars.enTitle,
+        en_subtitle: vars.enSubtitle,
+        en_collection: vars.enCollection,
+        en_content: vars.enContent,
+        en_detail_content: vars.enDetailContent
+      }).eq('id', vars.id);
+      if (error) throw error;
+    },
     onSuccess: () => {
-      utils.blog.list.invalidate();
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
       navigate(`/post/${id}`);
     },
   });

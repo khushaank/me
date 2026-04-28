@@ -5,7 +5,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useSidebar } from "@/contexts/SidebarContext";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { BlogPost } from "../../contracts/blog";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -21,11 +22,16 @@ export default function MiddleColumn({ posts }: MiddleColumnProps) {
   const { language } = useLanguage();
   const { isAdmin } = useAuth();
   const { leftOpen, rightOpen } = useSidebar();
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
 
-  const deletePost = trpc.blog.delete.useMutation({
-    onSuccess: () => { utils.blog.list.invalidate(); },
+  const deletePost = useMutation({
+    mutationFn: async ({ id }: { id: number }) => {
+      const { error } = await supabase.from('posts').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['posts'] }); },
   });
+
 
   /* Entrance animations for posts */
   useEffect(() => {

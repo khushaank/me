@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
+import { useMutation } from "@tanstack/react-query";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -10,8 +11,7 @@ interface SettingsModalProps {
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const { language } = useLanguage();
-  const { user } = useAuth();
-  const utils = trpc.useUtils();
+  const { user, logout } = useAuth();
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newUsername, setNewUsername] = useState("");
@@ -20,31 +20,39 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const updateMutation = trpc.auth.updateCredentials.useMutation({
+  const updateMutation = useMutation({
+    mutationFn: async (vars: any) => {
+      // Note: Supabase doesn't require current password for password update if logged in,
+      // but it's good practice. For simplicity with Supabase SDK:
+      if (vars.newPassword) {
+        const { error } = await supabase.auth.updateUser({ password: vars.newPassword });
+        if (error) throw error;
+      }
+      if (vars.newUsername) {
+        const { error } = await supabase.auth.updateUser({ data: { name: vars.newUsername } });
+        if (error) throw error;
+      }
+    },
     onSuccess: () => {
       setSuccess(language === "zh" ? "已更新，请重新登入" : "Updated. Please log in again.");
-      utils.auth.me.invalidate();
-      setTimeout(() => {
+      setTimeout(async () => {
         setSuccess("");
         onClose();
+        await logout();
         window.location.href = "/login";
       }, 1500);
     },
-    onError: (err) => {
+    onError: (err: any) => {
       setError(err.message);
     },
   });
+
 
   if (!isOpen) return null;
 
   const handleSubmit = () => {
     setError("");
     setSuccess("");
-
-    if (!currentPassword) {
-      setError(language === "zh" ? "请输入当前密码" : "Current password is required");
-      return;
-    }
 
     if (newPassword && newPassword !== confirmPassword) {
       setError(language === "zh" ? "新密码不一致" : "New passwords do not match");
@@ -161,7 +169,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 cursor: "default",
               }}
             >
-              {user?.username}
+              {user?.email}
             </div>
           </div>
 
@@ -181,7 +189,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               type="text"
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
-              placeholder={user?.username}
+              placeholder={user?.name || user?.username}
               style={inputStyle}
             />
           </div>

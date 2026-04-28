@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
 import { useNavigate } from "react-router";
 
 interface ContactModalProps {
@@ -47,33 +47,40 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [isPending, setIsPending] = useState(false);
 
-  const createContact = trpc.contact.create.useMutation({
-    onSuccess: () => {
-      setSuccess(true);
-      setName("");
-      setMessage("");
-      setTimeout(() => {
-        setSuccess(false);
-        onClose();
-      }, 2000);
-    },
-    onError: () => {
-      setError(s.error);
-    },
-  });
-
-  const handleSend = () => {
+  const handleSend = async () => {
     setError("");
     if (!message.trim()) {
       setError(s.emptyMessage);
       return;
     }
-    createContact.mutate({
-      name: name.trim() || undefined,
-      message: message.trim(),
-    });
+    
+    setIsPending(true);
+    const { error } = await supabase.from('messages').insert([
+      { 
+        name: name.trim() || null, 
+        message: message.trim(),
+        subject: "Contact Form",
+        email: null // Could add email field to UI later
+      }
+    ]);
+
+    if (error) {
+      setError(s.error);
+      setIsPending(false);
+    } else {
+      setSuccess(true);
+      setName("");
+      setMessage("");
+      setIsPending(false);
+      setTimeout(() => {
+        setSuccess(false);
+        onClose();
+      }, 2000);
+    }
   };
+
 
   if (!isOpen) return null;
 
@@ -216,7 +223,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </button>
               <button
                 onClick={handleSend}
-                disabled={createContact.isPending}
+                disabled={isPending}
                 style={{
                   flex: 1,
                   padding: "10px 16px",
@@ -226,11 +233,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   background: "#FFFFFF",
                   border: "none",
                   borderRadius: "4px",
-                  cursor: createContact.isPending ? "wait" : "pointer",
-                  opacity: createContact.isPending ? 0.7 : 1,
+                  cursor: isPending ? "wait" : "pointer",
+                  opacity: isPending ? 0.7 : 1,
                 }}
               >
-                {createContact.isPending ? s.sending : s.send}
+                {isPending ? s.sending : s.send}
               </button>
             </div>
 

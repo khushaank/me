@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import gsap from "gsap";
 import ShaderCanvas from "./ShaderCanvas";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { useSidebar } from "@/contexts/SidebarContext";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface LeftColumnProps {
   onContactClick: () => void;
@@ -19,14 +20,32 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
   const { language } = useLanguage();
   const { isAdmin } = useAuth();
   const { leftOpen, closeAll } = useSidebar();
-  const utils = trpc.useUtils();
+  const queryClient = useQueryClient();
   const panelRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { data: bio } = trpc.profile.get.useQuery();
-  const updateBio = trpc.profile.update.useMutation({
-    onSuccess: () => utils.profile.get.invalidate(),
+  const { data: bio } = useQuery({
+    queryKey: ['profileBio'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('profile_bio').select('*').eq('id', 1).single();
+      if (error) return null;
+      return data;
+    }
   });
+
+  const updateBio = useMutation({
+    mutationFn: async (vars: any) => {
+      const { error } = await supabase.from('profile_bio').update({
+        zh_text: vars.zhText,
+        en_text: vars.enText,
+        email: vars.email,
+        instagram: vars.instagram
+      }).eq('id', 1);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['profileBio'] }),
+  });
+
 
   const [isEditing, setIsEditing] = useState(false);
   const [editZh, setEditZh] = useState("");
@@ -35,9 +54,10 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
   const [editInstagram, setEditInstagram] = useState("");
 
   const profileText = {
-    zh: bio?.zhText || fallbackText.zh,
-    en: bio?.enText || fallbackText.en,
+    zh: bio?.zh_text || fallbackText.zh,
+    en: bio?.en_text || fallbackText.en,
   };
+
   const email = bio?.email || "khushaank@gmail.com";
   const instagram = bio?.instagram || "https://instagram.com";
 

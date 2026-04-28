@@ -9,10 +9,10 @@ import SettingsModal from "./components/SettingsModal";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 import { SidebarProvider, useSidebar } from "./contexts/SidebarContext";
-import { trpc } from "@/providers/trpc";
+import { supabase } from "@/lib/supabase";
 import type { BlogPost } from "../contracts/blog";
-import { toBlogPost } from "../contracts/blog";
 import { useAuth } from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -133,11 +133,9 @@ function Backdrop() {
 /* ------------------------------------------------------------------ */
 /*  HomePage — three-column layout with collapsible sidebars           */
 /* ------------------------------------------------------------------ */
-function HomePage() {
+function HomePage({ posts, isLoading }: { posts: BlogPost[], isLoading: boolean }) {
   const [showContact, setShowContact] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const { data: dbPosts, isLoading } = trpc.blog.list.useQuery();
-  const posts: BlogPost[] = dbPosts ? dbPosts.map(toBlogPost) : [];
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -187,7 +185,6 @@ function HomePage() {
             className="flex-1 flex items-center justify-center"
             style={{ borderRight: "1px solid var(--border-light)", height: "calc(100vh - 44px)" }}
           >
-            {/* Skeleton loader */}
             <div className="w-full max-w-xl px-6 space-y-6">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="space-y-3">
@@ -215,9 +212,8 @@ function HomePage() {
 /* ------------------------------------------------------------------ */
 /*  PostPage — detail view                                            */
 /* ------------------------------------------------------------------ */
-function PostPage() {
-  const { data: dbPosts } = trpc.blog.list.useQuery();
-  const posts: BlogPost[] = dbPosts ? dbPosts.map(toBlogPost) : [];
+function PostPage({ posts, isLoading }: { posts: BlogPost[], isLoading: boolean }) {
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "var(--bg-warm-white)" }}>Loading...</div>;
   return <PostDetail posts={posts} />;
 }
 
@@ -225,13 +221,46 @@ function PostPage() {
 /*  App — root with all providers                                      */
 /* ------------------------------------------------------------------ */
 export default function App() {
+  const { data: posts = [], isLoading } = useQuery({
+    queryKey: ['posts'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .order('sort_order', { ascending: false })
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      return (data || []).map((p: any) => ({
+        id: p.id,
+        year: p.year || new Date(p.created_at).getFullYear().toString(),
+        image: p.image || p.image_url || "/images/hero-art.jpg",
+        zh: {
+          title: p.zh_title || p.title || "",
+          subtitle: p.zh_subtitle || p.excerpt || "",
+          collection: p.zh_collection || p.category || "",
+          content: p.zh_content || p.content || "",
+          detailContent: p.zh_detail_content || p.content || "",
+        },
+        en: {
+          title: p.en_title || p.title || "",
+          subtitle: p.en_subtitle || p.excerpt || "",
+          collection: p.en_collection || p.category || "",
+          content: p.en_content || p.content || "",
+          detailContent: p.en_detail_content || p.content || "",
+        }
+      })) as BlogPost[];
+    }
+  });
+
   return (
     <ThemeProvider>
       <LanguageProvider>
         <SidebarProvider>
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/post/:id" element={<PostPage />} />
+            <Route path="/" element={<HomePage posts={posts} isLoading={isLoading} />} />
+            <Route path="/post/:id" element={<PostPage posts={posts} isLoading={isLoading} />} />
             <Route path="/login" element={<Login />} />
             <Route path="/guestbook" element={<Guestbook />} />
             <Route path="/admin/new-post" element={<NewPost />} />
@@ -242,3 +271,4 @@ export default function App() {
     </ThemeProvider>
   );
 }
+

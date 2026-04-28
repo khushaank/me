@@ -1,6 +1,3 @@
-import type { Post } from "@db/schema";
-
-// Frontend-facing BlogPost shape — compatible with existing UI components
 export interface PostContent {
   title: string;
   subtitle: string;
@@ -18,9 +15,10 @@ export interface BlogPost {
 }
 
 /**
- * Transform a database Post row into the BlogPost shape the UI expects.
+ * Transform a database Post row from Supabase into the BlogPost shape the UI expects.
  */
-export function toBlogPost(post: Post): BlogPost {
+export function toBlogPost(post: any): BlogPost {
+
   return {
     id: post.id,
     year: post.year,
