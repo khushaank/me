@@ -1,4 +1,4 @@
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, sql } from "drizzle-orm";
 import { getDb } from "./connection";
 import { posts } from "@db/schema";
 import type { InsertPost } from "@db/schema";
@@ -52,3 +52,11 @@ export async function seedPostsIfEmpty(postsData: InsertPost[]) {
   }
   return { seeded: true, count: postsData.length };
 }
+
+export async function incrementClicks(id: number) {
+  await getDb()
+    .update(posts)
+    .set({ clicksCount: sql`${posts.clicksCount} + 1` })
+    .where(eq(posts.id, id));
+}
+

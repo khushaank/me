@@ -6,10 +6,18 @@ import {
   createPost,
   updatePost,
   deletePost,
+  incrementClicks,
 } from "./queries/posts";
 
 export const blogRouter = createRouter({
   list: publicQuery.query(async () => findAllPosts()),
+
+  recordClick: publicQuery
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ input }) => {
+      await incrementClicks(input.id);
+      return { success: true };
+    }),
 
   byId: publicQuery
     .input(z.object({ id: z.number() }))
