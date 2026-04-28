@@ -10,7 +10,7 @@ export interface BlogPost {
   id: string | number;
   year: string;
   image: string;
-  zh: PostContent;
+  fr: PostContent;
   en: PostContent;
 }
 
@@ -23,12 +23,12 @@ export function toBlogPost(post: any): BlogPost {
     id: post.id,
     year: post.year,
     image: post.image,
-    zh: {
-      title: post.zhTitle,
-      subtitle: post.zhSubtitle,
-      collection: post.zhCollection,
-      content: post.zhContent,
-      detailContent: post.zhDetailContent,
+    fr: {
+      title: post.frTitle,
+      subtitle: post.frSubtitle,
+      collection: post.frCollection,
+      content: post.frContent,
+      detailContent: post.frDetailContent,
     },
     en: {
       title: post.enTitle,

@@ -15,7 +15,7 @@ export default function NewPost() {
   const [form, setForm] = useState({
     year: "2024",
     image: "/images/hero-art.jpg",
-    zhTitle: "", zhSubtitle: "", zhCollection: "", zhContent: "", zhDetailContent: "",
+    frTitle: "", frSubtitle: "", frCollection: "", frContent: "", frDetailContent: "",
     enTitle: "", enSubtitle: "", enCollection: "", enContent: "", enDetailContent: "",
   });
 
@@ -25,11 +25,11 @@ export default function NewPost() {
         year: vars.year,
         image: vars.image,
         sort_order: vars.sortOrder,
-        zh_title: vars.zhTitle,
-        zh_subtitle: vars.zhSubtitle,
-        zh_collection: vars.zhCollection,
-        zh_content: vars.zhContent,
-        zh_detail_content: vars.zhDetailContent,
+        fr_title: vars.frTitle,
+        fr_subtitle: vars.frSubtitle,
+        fr_collection: vars.frCollection,
+        fr_content: vars.frContent,
+        fr_detail_content: vars.frDetailContent,
         en_title: vars.enTitle,
         en_subtitle: vars.enSubtitle,
         en_collection: vars.enCollection,
@@ -39,7 +39,7 @@ export default function NewPost() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['posts-v3'] });
       navigate("/");
     },
   });
@@ -51,15 +51,15 @@ export default function NewPost() {
   }
 
   const handleSubmit = () => {
-    if (!form.zhTitle || !form.enTitle) return;
+    if (!form.frTitle || !form.enTitle) return;
     createPost.mutate({ ...form, sortOrder: 0 });
   };
 
   const t = {
-    zh: { title: "新建文章", back: "返回", submit: "发布", submitting: "发布中...", required: "标题为必填项" },
+    fr: { title: "Nouvel article", back: "RETOUR", submit: "PUBLIER", submitting: "Publication...", required: "Le titre est obligatoire" },
     en: { title: "New Post", back: "Back", submit: "Publish", submitting: "Publishing...", required: "Title is required" },
   };
-  const s = t[language === "zh" ? "zh" : "en"];
+  const s = t[language === "fr" ? "fr" : "en"];
 
   const inputStyle = {
     width: "100%",
@@ -90,7 +90,7 @@ export default function NewPost() {
 
         <div className="space-y-4">
           <div>
-            <label style={{ fontSize: "11px", color: "var(--text-grey)", display: "block", marginBottom: "4px" }}>Year</label>
+            <label style={{ fontSize: "11px", color: "var(--text-grey)", display: "block", marginBottom: "4px" }}>{language === "fr" ? "Année" : "Year"}</label>
             <input value={form.year} onChange={(e) => setForm({ ...form, year: e.target.value })} style={inputStyle} />
           </div>
 
@@ -104,24 +104,24 @@ export default function NewPost() {
           </div>
 
           <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: "16px" }}>
-            <h3 style={{ fontSize: "12px", color: "var(--text-grey)", marginBottom: "12px" }}>中文内容</h3>
+            <h3 style={{ fontSize: "12px", color: "var(--text-grey)", marginBottom: "12px" }}>{language === "fr" ? "Contenu Français" : "French Content"}</h3>
             <div className="space-y-3">
-              <input placeholder="标题" value={form.zhTitle} onChange={(e) => setForm({ ...form, zhTitle: e.target.value })} style={inputStyle} />
-              <input placeholder="副标题" value={form.zhSubtitle} onChange={(e) => setForm({ ...form, zhSubtitle: e.target.value })} style={inputStyle} />
-              <input placeholder="分类" value={form.zhCollection} onChange={(e) => setForm({ ...form, zhCollection: e.target.value })} style={inputStyle} />
-              <textarea placeholder="摘要内容" value={form.zhContent} onChange={(e) => setForm({ ...form, zhContent: e.target.value })} rows={3} style={{ ...inputStyle, resize: "vertical" }} />
-              <textarea placeholder="详细内容" value={form.zhDetailContent} onChange={(e) => setForm({ ...form, zhDetailContent: e.target.value })} rows={6} style={{ ...inputStyle, resize: "vertical" }} />
+              <input placeholder="Titre" value={form.frTitle} onChange={(e) => setForm({ ...form, frTitle: e.target.value })} style={inputStyle} />
+              <input placeholder="Sous-titre" value={form.frSubtitle} onChange={(e) => setForm({ ...form, frSubtitle: e.target.value })} style={inputStyle} />
+              <input placeholder="Collection" value={form.frCollection} onChange={(e) => setForm({ ...form, frCollection: e.target.value })} style={inputStyle} />
+              <textarea placeholder="Résumé" value={form.frContent} onChange={(e) => setForm({ ...form, frContent: e.target.value })} rows={3} style={{ ...inputStyle, resize: "vertical" }} />
+              <textarea placeholder="Détail du contenu" value={form.frDetailContent} onChange={(e) => setForm({ ...form, frDetailContent: e.target.value })} rows={6} style={{ ...inputStyle, resize: "vertical" }} />
             </div>
           </div>
 
           <div style={{ borderTop: "1px solid var(--border-light)", paddingTop: "16px" }}>
-            <h3 style={{ fontSize: "12px", color: "var(--text-grey)", marginBottom: "12px" }}>English Content</h3>
+            <h3 style={{ fontSize: "12px", color: "var(--text-grey)", marginBottom: "12px" }}>{language === "fr" ? "Contenu Anglais" : "English Content"}</h3>
             <div className="space-y-3">
-              <input placeholder="Title" value={form.enTitle} onChange={(e) => setForm({ ...form, enTitle: e.target.value })} style={inputStyle} />
-              <input placeholder="Subtitle" value={form.enSubtitle} onChange={(e) => setForm({ ...form, enSubtitle: e.target.value })} style={inputStyle} />
-              <input placeholder="Collection" value={form.enCollection} onChange={(e) => setForm({ ...form, enCollection: e.target.value })} style={inputStyle} />
-              <textarea placeholder="Summary content" value={form.enContent} onChange={(e) => setForm({ ...form, enContent: e.target.value })} rows={3} style={{ ...inputStyle, resize: "vertical" }} />
-              <textarea placeholder="Detail content" value={form.enDetailContent} onChange={(e) => setForm({ ...form, enDetailContent: e.target.value })} rows={6} style={{ ...inputStyle, resize: "vertical" }} />
+              <input placeholder={language === "fr" ? "Titre" : "Title"} value={form.enTitle} onChange={(e) => setForm({ ...form, enTitle: e.target.value })} style={inputStyle} />
+              <input placeholder={language === "fr" ? "Sous-titre" : "Subtitle"} value={form.enSubtitle} onChange={(e) => setForm({ ...form, enSubtitle: e.target.value })} style={inputStyle} />
+              <input placeholder={language === "fr" ? "Collection" : "Collection"} value={form.enCollection} onChange={(e) => setForm({ ...form, enCollection: e.target.value })} style={inputStyle} />
+              <textarea placeholder={language === "fr" ? "Résumé" : "Summary content"} value={form.enContent} onChange={(e) => setForm({ ...form, enContent: e.target.value })} rows={3} style={{ ...inputStyle, resize: "vertical" }} />
+              <textarea placeholder={language === "fr" ? "Contenu détaillé" : "Detail content"} value={form.enDetailContent} onChange={(e) => setForm({ ...form, enDetailContent: e.target.value })} rows={6} style={{ ...inputStyle, resize: "vertical" }} />
             </div>
           </div>
 

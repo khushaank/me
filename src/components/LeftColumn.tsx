@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import ShaderCanvas from "./ShaderCanvas";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -12,7 +12,7 @@ interface LeftColumnProps {
 }
 
 const fallbackText = {
-  zh: "Khushaank Gupta，人工智能、科技与商业领域的写作者和思考者。我探索AI如何重塑我们的生活、工作方式以及思维模式，同时关注个人成长、商业策略和财务智慧。从硅谷的科技创新到华尔街的金融波动，从深度学习的前沿突破到日常生活的微小进步——我相信技术与人文的交汇点才是未来真正的增长点。曾在多家科技公司担任产品顾问，同时也是一名独立投资人。",
+  fr: "Khushaank Gupta — écrivain et penseur à l'intersection de l'IA, de la technologie, des affaires et du développement personnel. J'explore comment l'intelligence artificielle redéfinit nos vies, nos carrières et nos modes de pensée, tout en restant ancré dans les principes intemporels de la stratégie commerciale et de la sagesse financière. Des innovations de la Silicon Valley aux mouvements de Wall Street, des percées du deep learning aux gains discrets des habitudes quotidiennes — je crois que la véritable croissance se produit là où la technologie rencontre l'humanité. Conseiller produit pour des startups technologiques et investisseur indépendant.",
   en: "Khushaank Gupta — writer and thinker at the intersection of AI, technology, business, and personal growth. I explore how artificial intelligence is reshaping our lives, careers, and patterns of thinking, while staying grounded in the timeless principles of business strategy and financial wisdom. From Silicon Valley innovations to Wall Street movements, from deep learning breakthroughs to the quiet gains of daily habits — I believe the real growth happens where technology meets humanity. Product advisor to tech startups and independent investor.",
 };
 
@@ -36,7 +36,7 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
   const updateBio = useMutation({
     mutationFn: async (vars: any) => {
       const { error } = await supabase.from('profile_bio').update({
-        zh_text: vars.zhText,
+        fr_text: vars.frText,
         en_text: vars.enText,
         email: vars.email,
         instagram: vars.instagram
@@ -48,13 +48,13 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
 
 
   const [isEditing, setIsEditing] = useState(false);
-  const [editZh, setEditZh] = useState("");
+  const [editFr, setEditFr] = useState("");
   const [editEn, setEditEn] = useState("");
   const [editEmail, setEditEmail] = useState("");
   const [editInstagram, setEditInstagram] = useState("");
 
   const profileText = {
-    zh: bio?.zh_text || fallbackText.zh,
+    fr: bio?.fr_text || fallbackText.fr,
     en: bio?.en_text || fallbackText.en,
   };
 
@@ -62,7 +62,7 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
   const instagram = bio?.instagram || "https://instagram.com";
 
   const startEdit = () => {
-    setEditZh(profileText.zh);
+    setEditFr(profileText.fr);
     setEditEn(profileText.en);
     setEditEmail(email);
     setEditInstagram(instagram);
@@ -70,7 +70,7 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
   };
 
   const saveEdit = () => {
-    updateBio.mutate({ zhText: editZh, enText: editEn, email: editEmail, instagram: editInstagram });
+    updateBio.mutate({ frText: editFr, enText: editEn, email: editEmail, instagram: editInstagram });
     setIsEditing(false);
   };
 
@@ -180,7 +180,7 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
                   letterSpacing: "0.05em",
                 }}
               >
-                EDIT
+                {language === "fr" ? "MODIFIER" : "EDIT"}
               </button>
             )}
           </div>
@@ -213,19 +213,19 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
           {isEditing ? (
             <div className="space-y-3">
               <div>
-                <label style={labelStyle}>Chinese Bio</label>
-                <textarea value={editZh} onChange={(e) => setEditZh(e.target.value)} rows={6} style={inputStyle} />
+                <label style={labelStyle}>{language === "fr" ? "Bio en français" : "French Bio"}</label>
+                <textarea value={editFr} onChange={(e) => setEditFr(e.target.value)} rows={6} style={inputStyle} />
               </div>
               <div>
-                <label style={labelStyle}>English Bio</label>
+                <label style={labelStyle}>{language === "fr" ? "Bio en anglais" : "English Bio"}</label>
                 <textarea value={editEn} onChange={(e) => setEditEn(e.target.value)} rows={6} style={inputStyle} />
               </div>
               <div className="flex gap-2 pt-1">
                 <button onClick={saveEdit} className="btn-light text-[10px] px-3 py-1.5">
-                  SAVE
+                  {language === "fr" ? "ENREGISTRER" : "SAVE"}
                 </button>
                 <button onClick={() => setIsEditing(false)} className="btn-dark text-[10px] px-3 py-1.5">
-                  CANCEL
+                  {language === "fr" ? "ANNULER" : "CANCEL"}
                 </button>
               </div>
             </div>
@@ -265,7 +265,7 @@ export default function LeftColumn({ onContactClick }: LeftColumnProps) {
             onMouseEnter={(e) => { (e.target as HTMLElement).style.opacity = "1"; }}
             onMouseLeave={(e) => { (e.target as HTMLElement).style.opacity = "0.7"; }}
           >
-            Get in Touch →
+            {language === "fr" ? "Me contacter" : "Get in Touch"} →
           </button>
         </div>
       </div>

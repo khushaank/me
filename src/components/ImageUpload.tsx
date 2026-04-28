@@ -1,5 +1,6 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "../contexts/LanguageContext";
 
 interface ImageUploadProps {
   value: string;
@@ -9,6 +10,7 @@ interface ImageUploadProps {
 }
 
 export default function ImageUpload({ value, onChange, label, variant = "dark" }: ImageUploadProps) {
+  const { language } = useLanguage();
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -42,7 +44,7 @@ export default function ImageUpload({ value, onChange, label, variant = "dark" }
       onChange(publicUrl);
       setPreview(null);
     } catch (err) {
-      alert("Upload failed: " + (err instanceof Error ? err.message : "Network error"));
+      alert((language === "fr" ? "Échec du téléversement: " : "Upload failed: ") + (err instanceof Error ? err.message : "Network error"));
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -122,16 +124,18 @@ export default function ImageUpload({ value, onChange, label, variant = "dark" }
           />
         </div>
       ) : (
-        <div style={emptyBoxStyle}>No image</div>
+        <div style={emptyBoxStyle}>{language === "fr" ? "Aucune image" : "No image"}</div>
       )}
 
       <div className="flex gap-2">
         <button onClick={() => inputRef.current?.click()} disabled={uploading} style={btnUploadStyle}>
-          {uploading ? "UPLOADING..." : "UPLOAD"}
+          {uploading 
+            ? (language === "fr" ? "TÉLÉVERSEMENT..." : "UPLOADING...") 
+            : (language === "fr" ? "TÉLÉVERSER" : "UPLOAD")}
         </button>
         {value && (
           <button onClick={handleRemove} style={btnRemoveStyle}>
-            REMOVE
+            {language === "fr" ? "SUPPRIMER" : "REMOVE"}
           </button>
         )}
       </div>

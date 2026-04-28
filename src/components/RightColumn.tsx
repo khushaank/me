@@ -19,20 +19,20 @@ interface CVItem {
 }
 
 const fallbackCvData: Record<string, Omit<CVItem, 'id'>[]> = {
-  zh: [
-    { category: "Education", title: "斯坦福大学", subtitle: "计算机科学 / 硕士", year: "2018 - 2020" },
-    { category: "Education", title: "印度理工学院德里分校", subtitle: "电子工程 / 学士", year: "2014 - 2018" },
-    { category: "Employment", title: "独立产品顾问", subtitle: "AI 与科技战略 / 全球", year: "2022 - 至今" },
-    { category: "Employment", title: "Google", subtitle: "产品经理 / 机器学习平台", year: "2020 - 2022" },
-    { category: "Employment", title: "McKinsey & Company", subtitle: "商业分析师 / 数字实践", year: "2018 - 2020" },
-    { category: "Investment", title: "早期科技投资组合", subtitle: "种子轮至A轮 / AI 与 SaaS", year: "2021 - 至今" },
-    { category: "Writing", title: "AI 战略通讯", subtitle: "Substack / 50,000+ 订阅者", year: "2023 - 至今" },
-    { category: "Writing", title: "《AI 时代的商业思维》", subtitle: "独立出版 / Amazon 畅销", year: "2024" },
-    { category: "Speaking", title: "TEDx 演讲", subtitle: "AI 与人类未来的工作", year: "2024" },
-    { category: "Speaking", title: "Web Summit", subtitle: "主舞台 / AI 伦理小组", year: "2023" },
-    { category: "Featured", title: "福布斯 30 Under 30", subtitle: "亚洲 / 科技与金融", year: "2023" },
-    { category: "Featured", title: "彭博商业周刊", subtitle: "AI 投资新趋势 / 专访", year: "2024" },
-    { category: "Featured", title: "TechCrunch", subtitle: "创业公司AI转型指南", year: "2024" },
+  fr: [
+    { category: "Education", title: "Université de Stanford", subtitle: "Informatique / Master", year: "2018 - 2020" },
+    { category: "Education", title: "Institut Indien de Technologie Delhi", subtitle: "Génie Électrique / Licence", year: "2014 - 2018" },
+    { category: "Employment", title: "Conseiller produit indépendant", subtitle: "Stratégie IA & Technologie / Monde", year: "2022 - Présent" },
+    { category: "Employment", title: "Google", subtitle: "Chef de produit / Plateforme ML", year: "2020 - 2022" },
+    { category: "Employment", title: "McKinsey & Company", subtitle: "Analyste d'affaires / Pratique numérique", year: "2018 - 2020" },
+    { category: "Investment", title: "Portefeuille technologique early-stage", subtitle: "Seed à Série A / IA & SaaS", year: "2021 - Présent" },
+    { category: "Writing", title: "Lettre d'information sur la stratégie de l'IA", subtitle: "Substack / 50 000+ abonnés", year: "2023 - Présent" },
+    { category: "Writing", title: "'La pensée commerciale à l'ère de l'IA'", subtitle: "Auto-publié / Bestseller Amazon", year: "2024" },
+    { category: "Speaking", title: "Conférence TEDx", subtitle: "L'IA et l'avenir du travail humain", year: "2024" },
+    { category: "Speaking", title: "Web Summit", subtitle: "Scène principale / Panel sur l'éthique de l'IA", year: "2023" },
+    { category: "Featured", title: "Forbes 30 Under 30", subtitle: "Asie / Technologie & Finance", year: "2023" },
+    { category: "Featured", title: "Bloomberg Businessweek", subtitle: "Nouvelles tendances dans l'investissement IA / Interview", year: "2024" },
+    { category: "Featured", title: "TechCrunch", subtitle: "Guide de transformation IA pour startups", year: "2024" },
   ],
   en: [
     { category: "Education", title: "Stanford University", subtitle: "Computer Science / M.S.", year: "2018 - 2020" },
@@ -72,8 +72,8 @@ export default function RightColumn() {
     mutationFn: async (vars: any) => {
       const { error } = await supabase.from('cv_entries').insert([{
         category: vars.category,
-        zh_title: vars.zhTitle,
-        zh_subtitle: vars.zhSubtitle,
+        fr_title: vars.frTitle,
+        fr_subtitle: vars.frSubtitle,
         en_title: vars.enTitle,
         en_subtitle: vars.enSubtitle,
         year: vars.year,
@@ -88,8 +88,8 @@ export default function RightColumn() {
     mutationFn: async (vars: any) => {
       const { error } = await supabase.from('cv_entries').update({
         category: vars.category,
-        zh_title: vars.zhTitle,
-        zh_subtitle: vars.zhSubtitle,
+        fr_title: vars.frTitle,
+        fr_subtitle: vars.frSubtitle,
         en_title: vars.enTitle,
         en_subtitle: vars.enSubtitle,
         year: vars.year
@@ -100,7 +100,7 @@ export default function RightColumn() {
   });
 
   const deleteCv = useMutation({
-    mutationFn: async ({ id }: { id: string }) => {
+    mutationFn: async (id: string | number) => {
       const { error } = await supabase.from('cv_entries').delete().eq('id', id);
       if (error) throw error;
     },
@@ -108,8 +108,8 @@ export default function RightColumn() {
   });
 
 
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [editForm, setEditForm] = useState({ category: "", zhTitle: "", zhSubtitle: "", enTitle: "", enSubtitle: "", year: "" });
+  const [editingId, setEditingId] = useState<string | number | null>(null);
+  const [editForm, setEditForm] = useState({ category: "", frTitle: "", frSubtitle: "", enTitle: "", enSubtitle: "", year: "" });
   const [isAdding, setIsAdding] = useState(false);
 
   /* Animate panel open / close */
@@ -144,39 +144,84 @@ export default function RightColumn() {
   const items = useDb
     ? dbItems.map((e: any) => ({
         category: e.category,
-        title: language === "zh" ? e.zh_title : e.en_title,
-        subtitle: language === "zh" ? (e.zh_subtitle || undefined) : (e.en_subtitle || undefined),
+        title: language === "fr" ? e.fr_title : e.en_title,
+        subtitle: language === "fr" ? (e.fr_subtitle || undefined) : (e.en_subtitle || undefined),
         year: e.year,
         id: e.id,
       }))
     : fallbackCvData[language].map((e, i) => ({ ...e, id: i.toString() }));
 
-  const sections = items.reduce<Record<string, typeof items>>((acc, item) => {
-    if (!acc[item.category]) acc[item.category] = [];
-    acc[item.category].push(item);
-    return acc;
-  }, {});
+  const sections: Record<string, any[]> = {};
+  items.forEach(item => {
+    const cat = item.category;
+    if (!sections[cat]) sections[cat] = [];
+    sections[cat].push(item);
+  });
 
   const sectionOrder = ["Education", "Employment", "Investment", "Writing", "Speaking", "Featured"];
+  
+  const categoryMap: Record<string, Record<string, string>> = {
+    fr: {
+      "Education": "Éducation",
+      "Employment": "Emploi",
+      "Investment": "Investissement",
+      "Writing": "Écriture",
+      "Speaking": "Conférences",
+      "Featured": "Distinctions"
+    },
+    en: {
+      "Education": "Education",
+      "Employment": "Employment",
+      "Investment": "Investment",
+      "Writing": "Writing",
+      "Speaking": "Speaking",
+      "Featured": "Featured"
+    }
+  };
+
+  const uiStrings = {
+    fr: {
+      add: "+ AJOUTER",
+      edit: "MODIFIER",
+      del: "SUPPR",
+      save: "ENREGISTRER",
+      cancel: "ANNULER",
+      lastUpdated: "Dernière mise à jour",
+      editAvatar: "MODIFIER L'AVATAR",
+      close: "FERMER"
+    },
+    en: {
+      add: "+ ADD",
+      edit: "EDIT",
+      del: "DEL",
+      save: "SAVE",
+      cancel: "CANCEL",
+      lastUpdated: "Last Updated",
+      editAvatar: "EDIT AVATAR",
+      close: "CLOSE"
+    }
+  };
+
+  const s = uiStrings[language];
 
   const startEdit = (item: (typeof items)[0]) => {
     const dbItem = dbItems.find((d: any) => d.id === item.id);
     if (dbItem) {
       setEditForm({
         category: dbItem.category,
-        zhTitle: dbItem.zh_title,
-        zhSubtitle: dbItem.zh_subtitle || "",
+        frTitle: dbItem.fr_title,
+        frSubtitle: dbItem.fr_subtitle || "",
         enTitle: dbItem.en_title,
         enSubtitle: dbItem.en_subtitle || "",
         year: dbItem.year,
       });
-      setEditingId(item.id as any);
+      setEditingId(item.id);
       setIsAdding(false);
     }
   };
 
   const startAdd = () => {
-    setEditForm({ category: "Education", zhTitle: "", zhSubtitle: "", enTitle: "", enSubtitle: "", year: "" });
+    setEditForm({ category: "Education", frTitle: "", frSubtitle: "", enTitle: "", enSubtitle: "", year: "" });
     setIsAdding(true);
     setEditingId(null);
   };
@@ -224,7 +269,7 @@ export default function RightColumn() {
           </h2>
           {isAdmin && (
             <button onClick={startAdd} style={{ fontSize: "9px", color: "var(--text-grey)", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace", letterSpacing: "0.05em" }}>
-              + ADD
+              {s.add}
             </button>
           )}
         </div>
@@ -236,12 +281,12 @@ export default function RightColumn() {
           <div className="mb-6 p-3" style={{ border: "1px solid var(--border-light)", borderRadius: "2px" }}>
             <div className="space-y-2">
               {[
-                { key: "category", ph: "Category" },
-                { key: "zhTitle", ph: "ZH Title" },
-                { key: "zhSubtitle", ph: "ZH Subtitle" },
-                { key: "enTitle", ph: "EN Title" },
-                { key: "enSubtitle", ph: "EN Subtitle" },
-                { key: "year", ph: "Year" },
+                { key: "category", ph: language === "fr" ? "Catégorie" : "Category" },
+                { key: "frTitle", ph: language === "fr" ? "Titre (FR)" : "FR Title" },
+                { key: "frSubtitle", ph: language === "fr" ? "Sous-titre (FR)" : "FR Subtitle" },
+                { key: "enTitle", ph: language === "fr" ? "Titre (EN)" : "EN Title" },
+                { key: "enSubtitle", ph: language === "fr" ? "Sous-titre (EN)" : "EN Subtitle" },
+                { key: "year", ph: language === "fr" ? "Année" : "Year" },
               ].map((f) => (
                 <input
                   key={f.key}
@@ -263,8 +308,8 @@ export default function RightColumn() {
               ))}
             </div>
             <div className="flex gap-2 mt-2">
-              <button onClick={saveEdit} className="btn-filled text-[10px] px-3 py-1">SAVE</button>
-              <button onClick={() => { setIsAdding(false); setEditingId(null); }} className="btn-outline text-[10px] px-3 py-1">CANCEL</button>
+              <button onClick={saveEdit} className="btn-filled text-[10px] px-3 py-1">{s.save}</button>
+              <button onClick={() => { setIsAdding(false); setEditingId(null); }} className="btn-outline text-[10px] px-3 py-1">{s.cancel}</button>
             </div>
           </div>
         )}
@@ -279,7 +324,7 @@ export default function RightColumn() {
                 <div key={item.id} className="flex gap-3" style={{ marginBottom: idx < sectionItems.length - 1 ? "14px" : "0" }}>
                   {idx === 0 && (
                     <span style={{ fontSize: "10px", fontWeight: 400, color: "var(--text-grey)", lineHeight: 1.6, flexShrink: 0, width: "70px", letterSpacing: "0.03em" }}>
-                      {category}
+                      {categoryMap[language][category]}
                     </span>
                   )}
                   {idx > 0 && <span style={{ width: "70px", flexShrink: 0 }} />}
@@ -289,8 +334,8 @@ export default function RightColumn() {
                     <p style={{ fontSize: "10px", lineHeight: 1.6, color: "var(--text-grey)", marginTop: "2px" }}>{item.year}</p>
                     {isAdmin && useDb && (
                       <div className="flex gap-2 mt-1">
-                        <button onClick={() => startEdit(item)} style={{ fontSize: "9px", color: "var(--text-grey)", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace" }}>EDIT</button>
-                        <button onClick={() => { if (confirm("Delete?")) deleteCv.mutate({ id: item.id }); }} style={{ fontSize: "9px", color: "#E74C3C", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace" }}>DEL</button>
+                        <button onClick={() => startEdit(item)} style={{ fontSize: "9px", color: "var(--text-grey)", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace" }}>{s.edit}</button>
+                        <button onClick={() => { if (confirm(language === "fr" ? "Supprimer ?" : "Delete?")) deleteCv.mutate(item.id); }} style={{ fontSize: "9px", color: "#E74C3C", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace" }}>{s.del}</button>
                       </div>
                     )}
                   </div>
@@ -300,7 +345,7 @@ export default function RightColumn() {
           );
         })}
 
-        <p style={{ fontSize: "10px", color: "var(--text-grey)", marginTop: "32px", letterSpacing: "0.03em" }}>Last Updated 2025.04</p>
+        <p style={{ fontSize: "10px", color: "var(--text-grey)", marginTop: "32px", letterSpacing: "0.03em" }}>{s.lastUpdated} 2025.04</p>
       </div>
     </aside>
   );
@@ -310,6 +355,7 @@ export default function RightColumn() {
 /*  Avatar Section                                                    */
 /* ------------------------------------------------------------------ */
 function AvatarSection() {
+  const { language } = useLanguage();
   const { isAdmin } = useAuth();
   const queryClient = useQueryClient();
   const imageRef = useRef<HTMLImageElement>(null);
@@ -370,11 +416,11 @@ function AvatarSection() {
           {editingAvatar ? (
             <div className="p-2" style={{ border: "1px solid var(--border-light)", borderRadius: "2px" }}>
               <ImageUpload value={avatarUrl} onChange={(url) => updateSettings.mutate({ avatarImage: url })} label="Avatar" variant="light" />
-              <button onClick={() => setEditingAvatar(false)} className="btn-outline text-[10px] px-3 py-1 mt-2">CLOSE</button>
+              <button onClick={() => setEditingAvatar(false)} className="btn-outline text-[10px] px-3 py-1 mt-2">{language === "fr" ? "FERMER" : "CLOSE"}</button>
             </div>
           ) : (
             <button onClick={() => setEditingAvatar(true)} style={{ fontSize: "9px", color: "var(--text-grey)", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace", letterSpacing: "0.05em" }}>
-              EDIT AVATAR
+              {language === "fr" ? "MODIFIER L'AVATAR" : "EDIT AVATAR"}
             </button>
           )}
         </div>

@@ -29,13 +29,13 @@ export default function Guestbook() {
 
 
   const t = {
-    zh: {
-      title: "留言板",
-      back: "返回首页",
-      empty: "还没有留言",
-      loading: "加载中...",
-      anon: "匿名",
-      delete: "删除",
+    fr: {
+      title: "Livre d'or",
+      back: "Retour à l'accueil",
+      empty: "Aucun message pour le moment",
+      loading: "Chargement...",
+      anon: "Anonyme",
+      delete: "SUPPRIMER",
     },
     en: {
       title: "Guestbook",
@@ -132,15 +132,15 @@ export default function Guestbook() {
                     <span style={{ fontSize: "11px", color: "var(--text-grey)" }}>
                       {msg.created_at
                         ? new Date(msg.created_at).toLocaleDateString(
-                            language === "zh" ? "zh-CN" : "en-US",
-                          )
+                          language === "fr" ? "fr-FR" : "en-US",
+                        )
                         : ""}
                     </span>
                     {isAdmin && (
                       <button
                         onClick={() => {
-                          if (confirm("Delete this message?")) {
-                            deleteMutation.mutate({ id: msg.id });
+                          if (confirm(language === "fr" ? "Supprimer ce message ?" : "Delete this message?")) {
+                            deleteMutation.mutate(msg.id);
                           }
                         }}
                         style={{

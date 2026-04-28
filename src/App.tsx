@@ -5,10 +5,10 @@ import MiddleColumn from "./components/MiddleColumn";
 import RightColumn from "./components/RightColumn";
 import PostDetail from "./components/PostDetail";
 import ContactModal from "./components/ContactModal";
-import SettingsModal from "./components/SettingsModal";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import { LanguageProvider, useLanguage } from "./contexts/LanguageContext";
 import { SidebarProvider, useSidebar } from "./contexts/SidebarContext";
+import { SearchProvider, useSearch } from "./contexts/SearchContext";
 import { supabase } from "@/lib/supabase";
 import type { BlogPost } from "../contracts/blog";
 import { useAuth } from "@/hooks/useAuth";
@@ -18,24 +18,27 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Guestbook from "./pages/Guestbook";
 import NewPost from "./pages/NewPost";
+import Settings from "./pages/Settings";
 import gsap from "gsap";
 
 /* ------------------------------------------------------------------ */
 /*  ToggleBar — header controls                                       */
 /* ------------------------------------------------------------------ */
-function ToggleBar({ onSettingsClick }: { onSettingsClick?: () => void }) {
+function ToggleBar() {
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage } = useLanguage();
-  const { user, isAuthenticated, isLoading, isAdmin, logout } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const { toggleLeft, toggleRight } = useSidebar();
+  const { searchQuery, setSearchQuery, isSearchExpanded, setIsSearchExpanded } = useSearch();
   const navigate = useNavigate();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const btnClass = "header-btn";
 
   return (
     <div className="flex items-center gap-3 md:gap-4">
       {/* Sidebar toggles — always visible */}
-      <button onClick={toggleLeft} className={btnClass} title={language === "zh" ? "打开侧边栏" : "Open sidebar"}>
+      <button onClick={toggleLeft} className={btnClass} title={language === "fr" ? "Ouvrir la barre latérale" : "Open sidebar"}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <line x1="3" y1="6" x2="21" y2="6" />
           <line x1="3" y1="12" x2="21" y2="12" />
@@ -43,7 +46,7 @@ function ToggleBar({ onSettingsClick }: { onSettingsClick?: () => void }) {
         </svg>
       </button>
 
-      <button onClick={toggleRight} className={btnClass} title={language === "zh" ? "打开档案" : "Open archive"}>
+      <button onClick={toggleRight} className={btnClass} title={language === "fr" ? "Ouvrir l'archive" : "Open archive"}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <line x1="9" y1="3" x2="9" y2="21" />
@@ -52,21 +55,70 @@ function ToggleBar({ onSettingsClick }: { onSettingsClick?: () => void }) {
 
       <div className="w-px h-4 bg-[var(--border-light)] hidden sm:block" />
 
+      {/* Search Bar */}
+      <div className={`relative flex items-center transition-all duration-300 ${isSearchExpanded ? "w-32 sm:w-48" : "w-8"}`}>
+        <button 
+          onClick={() => {
+            setIsSearchExpanded(!isSearchExpanded);
+            if (!isSearchExpanded) setTimeout(() => searchInputRef.current?.focus(), 100);
+          }} 
+          className={btnClass}
+          title={language === "fr" ? "Rechercher" : "Search"}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+        <input
+          ref={searchInputRef}
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={language === "fr" ? "Rechercher..." : "Search..."}
+          className={`absolute left-8 h-8 bg-transparent border-none outline-none text-[11px] transition-opacity duration-300 ${isSearchExpanded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          style={{ 
+            color: "var(--text-charcoal)", 
+            fontFamily: "'Space Mono', monospace",
+            width: isSearchExpanded ? "calc(100% - 40px)" : "0"
+          }}
+        />
+        {isSearchExpanded && searchQuery && (
+          <button 
+            onClick={() => setSearchQuery("")} 
+            className="absolute right-0 text-[14px] hover:opacity-70"
+            style={{ color: "var(--text-grey)", background: "none", border: "none", cursor: "pointer" }}
+          >
+            &times;
+          </button>
+        )}
+      </div>
+
       {/* Auth / Settings */}
       {isLoading ? null : isAuthenticated ? (
         <>
-          {isAdmin && onSettingsClick && (
-            <button onClick={onSettingsClick} className={btnClass} title={language === "zh" ? "账户设置" : "Account Settings"}>
-              &#9881;
-            </button>
-          )}
-          <span onClick={logout} className={`${btnClass} hidden sm:inline`}>
-            {user?.username || user?.name || "ADMIN"}
+          <span 
+            onClick={() => navigate("/settings")} 
+            className={`${btnClass} hidden sm:flex items-center gap-2 cursor-pointer hover:opacity-80`}
+          >
+            {user?.avatarUrl && (
+              <img 
+                src={user.avatarUrl} 
+                alt="" 
+                className="w-5 h-5 rounded-full object-cover border border-[var(--border-light)]"
+              />
+            )}
+            <span style={{ fontSize: "11px" }}>
+              {user?.name || user?.username}
+            </span>
           </span>
+          <button onClick={logout} className={`${btnClass} text-[10px] opacity-40 hover:opacity-100`}>
+            {language === "fr" ? "DÉCONNEXION" : "LOGOUT"}
+          </button>
         </>
       ) : (
         <button onClick={() => navigate("/login")} className={btnClass}>
-          <span className="hidden sm:inline">{language === "zh" ? "登入" : "LOG IN"}</span>
+          <span className="hidden sm:inline">{language === "fr" ? "CONNEXION" : "LOG IN"}</span>
           <svg className="sm:hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
             <polyline points="10 17 15 12 10 7" />
@@ -77,7 +129,7 @@ function ToggleBar({ onSettingsClick }: { onSettingsClick?: () => void }) {
 
       {/* Language Toggle */}
       <button onClick={toggleLanguage} className={`${btnClass} hidden sm:block`}>
-        {language === "zh" ? "中 / EN" : "ZH / en"}
+        {language === "fr" ? "FR / en" : "fr / EN"}
       </button>
 
       {/* Theme Toggle */}
@@ -135,7 +187,7 @@ function Backdrop() {
 /* ------------------------------------------------------------------ */
 function HomePage({ posts, isLoading }: { posts: BlogPost[], isLoading: boolean }) {
   const [showContact, setShowContact] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const { isSearchExpanded } = useSearch();
   const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -164,12 +216,12 @@ function HomePage({ posts, isLoading }: { posts: BlogPost[], isLoading: boolean 
         }}
       >
         <span
-          className="font-medium tracking-wider uppercase select-none"
+          className={`font-medium tracking-wider uppercase select-none transition-opacity duration-300 ${isSearchExpanded ? "opacity-0 sm:opacity-100" : "opacity-100"}`}
           style={{ fontSize: "11px", color: "var(--text-charcoal)", letterSpacing: "0.08em" }}
         >
           KHUSHAANK GUPTA
         </span>
-        <ToggleBar onSettingsClick={() => setShowSettings(true)} />
+        <ToggleBar />
       </header>
 
       {/* Main content area */}
@@ -204,7 +256,6 @@ function HomePage({ posts, isLoading }: { posts: BlogPost[], isLoading: boolean 
       </div>
 
       <ContactModal isOpen={showContact} onClose={() => setShowContact(false)} />
-      <SettingsModal isOpen={showSettings} onClose={() => setShowSettings(false)} />
     </div>
   );
 }
@@ -222,11 +273,11 @@ function PostPage({ posts, isLoading }: { posts: BlogPost[], isLoading: boolean 
 /* ------------------------------------------------------------------ */
 export default function App() {
   const { data: posts = [], isLoading } = useQuery({
-    queryKey: ['posts-v2'],
+    queryKey: ['posts-v3'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('posts')
-        .select('id, title, excerpt, content, image, image_url, views, created_at, slug, claps, file_url, year, sort_order, clicks_count, zh_title, zh_subtitle, zh_collection, zh_content, zh_detail_content, en_title, en_subtitle, en_collection, en_content, en_detail_content');
+        .select('id, title, excerpt, content, image, image_url, views, created_at, slug, claps, file_url, year, sort_order, clicks_count, fr_title, fr_subtitle, fr_collection, fr_content, fr_detail_content, en_title, en_subtitle, en_collection, en_content, en_detail_content');
       
       if (error) throw error;
       
@@ -234,12 +285,12 @@ export default function App() {
         id: p.id,
         year: p.year || "2024",
         image: p.image || p.image_url || "/images/hero-art.jpg",
-        zh: {
-          title: p.zh_title || p.title || "Untitled",
-          subtitle: p.zh_subtitle || p.excerpt || "",
-          collection: p.zh_collection || p.category || "General",
-          content: p.zh_content || p.content || "",
-          detailContent: p.zh_detail_content || p.content || "",
+        fr: {
+          title: p.fr_title || p.title || "Untitled",
+          subtitle: p.fr_subtitle || p.excerpt || "",
+          collection: p.fr_collection || p.category || "General",
+          content: p.fr_content || p.content || "",
+          detailContent: p.fr_detail_content || p.content || "",
         },
         en: {
           title: p.en_title || p.title || "Untitled",
@@ -256,16 +307,19 @@ export default function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <SidebarProvider>
-          <Routes>
-            <Route path="/" element={<HomePage posts={posts} isLoading={isLoading} />} />
-            <Route path="/post/:id" element={<PostPage posts={posts} isLoading={isLoading} />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/guestbook" element={<Guestbook />} />
-            <Route path="/admin/new-post" element={<NewPost />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </SidebarProvider>
+        <SearchProvider>
+          <SidebarProvider>
+            <Routes>
+              <Route path="/" element={<HomePage posts={posts} isLoading={isLoading} />} />
+              <Route path="/post/:id" element={<PostPage posts={posts} isLoading={isLoading} />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/guestbook" element={<Guestbook />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/admin/new-post" element={<NewPost />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </SidebarProvider>
+        </SearchProvider>
       </LanguageProvider>
     </ThemeProvider>
   );

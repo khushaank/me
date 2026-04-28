@@ -266,4 +266,16 @@
       padding: 3px;
     }
   }
+
+  /* Comment content links */
+  .comment-content a {
+    color: var(--accent-teal);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  .comment-content a:hover {
+    opacity: 0.7;
+  }
 }

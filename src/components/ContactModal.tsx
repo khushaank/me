@@ -9,7 +9,7 @@ interface ContactModalProps {
 }
 
 const t = {
-  zh: {
+  fr: {
     title: "留言",
     nameLabel: "你的名字（可选）",
     namePlaceholder: "匿名",
@@ -55,11 +55,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       setError(s.emptyMessage);
       return;
     }
-    
+
     setIsPending(true);
     const { error } = await supabase.from('messages').insert([
-      { 
-        name: name.trim() || null, 
+      {
+        name: name.trim() || null,
         message: message.trim(),
         subject: "Contact Form",
         email: null // Could add email field to UI later

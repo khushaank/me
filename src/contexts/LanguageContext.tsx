@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
-export type Language = 'zh' | 'en';
+export type Language = 'fr' | 'en';
 
 interface LanguageContextType {
   language: Language;
@@ -17,7 +17,7 @@ const STORAGE_KEY = 'neural-atelier-lang';
 function getInitialLanguage(): Language {
   try {
     const stored = localStorage.getItem(STORAGE_KEY) as Language | null;
-    if (stored === 'zh' || stored === 'en') return stored;
+    if (stored === 'fr' || stored === 'en') return stored;
   } catch {
     // localStorage not available
   }
@@ -36,7 +36,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [language]);
 
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === 'zh' ? 'en' : 'zh'));
+    setLanguage((prev) => (prev === 'fr' ? 'en' : 'fr'));
   };
 
   return (

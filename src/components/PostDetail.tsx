@@ -1,12 +1,11 @@
-import { useParams, useNavigate, useSearchParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/lib/supabase";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import type { BlogPost } from "../../contracts/blog";
-import ImageUpload from "./ImageUpload";
 
 interface PostDetailProps {
   posts: BlogPost[];
@@ -15,103 +14,34 @@ interface PostDetailProps {
 export default function PostDetail({ posts }: PostDetailProps) {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { language } = useLanguage();
   const contentRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
-  const { language } = useLanguage();
-  const { isAdmin } = useAuth();
-  const queryClient = useQueryClient();
 
-  const isEditMode = searchParams.get("mode") === "edit" && isAdmin;
 
   const post = posts.find((p) => String(p.id) === String(id));
 
-  const updatePost = useMutation({
-    mutationFn: async (vars: any) => {
-      const { error } = await supabase.from('posts').update({
-        year: vars.year,
-        image: vars.image,
-        zh_title: vars.zhTitle,
-        zh_subtitle: vars.zhSubtitle,
-        zh_collection: vars.zhCollection,
-        zh_content: vars.zhContent,
-        zh_detail_content: vars.zhDetailContent,
-        en_title: vars.enTitle,
-        en_subtitle: vars.enSubtitle,
-        en_collection: vars.enCollection,
-        en_content: vars.enContent,
-        en_detail_content: vars.enDetailContent
-      }).eq('id', vars.id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['posts-v2'] });
-      navigate(`/post/${id}`);
-    },
-  });
-
-  const [editForm, setEditForm] = useState({
-    year: "", image: "", zhTitle: "", zhSubtitle: "", zhCollection: "",
-    zhContent: "", zhDetailContent: "", enTitle: "", enSubtitle: "",
-    enCollection: "", enContent: "", enDetailContent: "",
-  });
 
   useEffect(() => {
-    if (post && isEditMode) {
-      setEditForm({
-        year: post.year, image: post.image, zhTitle: post.zh.title,
-        zhSubtitle: post.zh.subtitle, zhCollection: post.zh.collection,
-        zhContent: post.zh.content, zhDetailContent: post.zh.detailContent,
-        enTitle: post.en.title, enSubtitle: post.en.subtitle,
-        enCollection: post.en.collection, enContent: post.en.content,
-        enDetailContent: post.en.detailContent,
-      });
-    }
-  }, [post, isEditMode]);
-
-  useEffect(() => {
-    if (contentRef.current && !isEditMode) {
+    if (contentRef.current) {
       gsap.fromTo(
         contentRef.current,
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.1 }
       );
     }
-    if (imageRef.current && !isEditMode) {
+    if (imageRef.current) {
       gsap.fromTo(
         imageRef.current,
         { opacity: 0, scale: 1.02 },
         { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }
       );
     }
-  }, [id, isEditMode]);
+  }, [id]);
 
-  const backText = language === "zh" ? "返回首页" : "Back to home";
-  const notFoundText = language === "zh" ? "文章不存在" : "Article not found";
-  const editThisText = language === "zh" ? "编辑此文章" : "Edit this post";
-  const viewText = language === "zh" ? "查看文章" : "View article";
+  const backText = language === "fr" ? "Retour à l'accueil" : "Back to home";
+  const notFoundText = language === "fr" ? "Article non trouvé" : "Article not found";
 
-  const inputBase: React.CSSProperties = {
-    width: "100%",
-    background: "#2A2A2A",
-    border: "1px solid #444",
-    borderRadius: "2px",
-    padding: "10px 12px",
-    fontSize: "13px",
-    color: "#FFFFFF",
-    fontFamily: "'Space Mono', monospace",
-    outline: "none",
-  };
-
-  const labelStyle: React.CSSProperties = {
-    fontSize: "10px",
-    color: "rgba(255,255,255,0.5)",
-    display: "block",
-    marginBottom: "6px",
-    fontFamily: "'Space Mono', monospace",
-    letterSpacing: "0.08em",
-    textTransform: "uppercase",
-  };
 
   if (!post) {
     return (
@@ -121,81 +51,6 @@ export default function PostDetail({ posts }: PostDetailProps) {
           <button onClick={() => navigate("/")} className="mt-4 underline-btn">
             {backText}
           </button>
-        </div>
-      </div>
-    );
-  }
-
-  // EDIT MODE
-  if (isEditMode) {
-    return (
-      <div className="min-h-screen" style={{ backgroundColor: "#1A1A1A" }}>
-        <header
-          className="fixed top-0 left-0 right-0 flex items-center justify-between px-4 md:px-6"
-          style={{ height: "44px", zIndex: 50, backgroundColor: "#1A1A1A", borderBottom: "1px solid #333" }}
-        >
-          <button onClick={() => navigate("/")} style={{ fontSize: "11px", fontWeight: 400, letterSpacing: "0.08em", textTransform: "uppercase", color: "#FFFFFF", background: "none", border: "none", cursor: "pointer" }}>
-            KHUSHAANK GUPTA
-          </button>
-          <div className="flex items-center gap-4">
-            <button onClick={() => navigate(`/post/${post.id}`)} style={{ fontSize: "11px", fontFamily: "'Space Mono', monospace", color: "rgba(255,255,255,0.6)", background: "none", border: "none", cursor: "pointer" }}>
-              {viewText}
-            </button>
-            <button onClick={() => navigate("/")} style={{ fontSize: "11px", fontFamily: "'Space Mono', monospace", color: "#FFFFFF", background: "none", border: "none", cursor: "pointer" }}>
-              {language === "zh" ? "关闭" : "Close"}
-            </button>
-          </div>
-        </header>
-
-        <div className="mx-auto px-4 md:px-6" style={{ maxWidth: "720px", padding: "72px 0 80px" }}>
-          <h1 style={{ fontSize: "15px", fontWeight: 400, color: "#FFFFFF", letterSpacing: "0.05em", marginBottom: "32px" }}>{editThisText}</h1>
-
-          <div className="space-y-5">
-            <div>
-              <label style={labelStyle}>Year</label>
-              <input type="text" value={editForm.year} onChange={(e) => setEditForm({ ...editForm, year: e.target.value })} style={inputBase} />
-            </div>
-
-            <div>
-              <ImageUpload value={editForm.image} onChange={(url) => setEditForm({ ...editForm, image: url })} label="Image" />
-            </div>
-
-            <div style={{ borderTop: "1px solid #333", paddingTop: "20px" }}>
-              <h3 style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", marginBottom: "16px", letterSpacing: "0.05em", fontFamily: "'Space Mono', monospace" }}>中文内容</h3>
-              <div className="space-y-4">
-                <div><label style={labelStyle}>标题</label><input type="text" value={editForm.zhTitle} onChange={(e) => setEditForm({ ...editForm, zhTitle: e.target.value })} style={inputBase} /></div>
-                <div><label style={labelStyle}>副标题</label><input type="text" value={editForm.zhSubtitle} onChange={(e) => setEditForm({ ...editForm, zhSubtitle: e.target.value })} style={inputBase} /></div>
-                <div><label style={labelStyle}>分类</label><input type="text" value={editForm.zhCollection} onChange={(e) => setEditForm({ ...editForm, zhCollection: e.target.value })} style={inputBase} /></div>
-                <div><label style={labelStyle}>摘要</label><textarea value={editForm.zhContent} onChange={(e) => setEditForm({ ...editForm, zhContent: e.target.value })} rows={3} style={{ ...inputBase, resize: "vertical" }} /></div>
-                <div><label style={labelStyle}>详细内容</label><textarea value={editForm.zhDetailContent} onChange={(e) => setEditForm({ ...editForm, zhDetailContent: e.target.value })} rows={8} style={{ ...inputBase, resize: "vertical" }} /></div>
-              </div>
-            </div>
-
-            <div style={{ borderTop: "1px solid #333", paddingTop: "20px" }}>
-              <h3 style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", marginBottom: "16px", letterSpacing: "0.05em", fontFamily: "'Space Mono', monospace" }}>English Content</h3>
-              <div className="space-y-4">
-                <div><label style={labelStyle}>Title</label><input type="text" value={editForm.enTitle} onChange={(e) => setEditForm({ ...editForm, enTitle: e.target.value })} style={inputBase} /></div>
-                <div><label style={labelStyle}>Subtitle</label><input type="text" value={editForm.enSubtitle} onChange={(e) => setEditForm({ ...editForm, enSubtitle: e.target.value })} style={inputBase} /></div>
-                <div><label style={labelStyle}>Collection</label><input type="text" value={editForm.enCollection} onChange={(e) => setEditForm({ ...editForm, enCollection: e.target.value })} style={inputBase} /></div>
-                <div><label style={labelStyle}>Summary</label><textarea value={editForm.enContent} onChange={(e) => setEditForm({ ...editForm, enContent: e.target.value })} rows={3} style={{ ...inputBase, resize: "vertical" }} /></div>
-                <div><label style={labelStyle}>Detail Content</label><textarea value={editForm.enDetailContent} onChange={(e) => setEditForm({ ...editForm, enDetailContent: e.target.value })} rows={8} style={{ ...inputBase, resize: "vertical" }} /></div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 pt-4" style={{ borderTop: "1px solid #333" }}>
-              <button
-                onClick={() => updatePost.mutate({ id: post.id, ...editForm, sortOrder: post.id })}
-                disabled={updatePost.isPending}
-                className="btn-filled flex-1 py-3 text-[11px]"
-                style={{ opacity: updatePost.isPending ? 0.6 : 1, cursor: updatePost.isPending ? "wait" : "pointer" }}
-              >
-                {updatePost.isPending ? (language === "zh" ? "保存中..." : "Saving...") : (language === "zh" ? "保存" : "SAVE")}
-              </button>
-              <button onClick={() => navigate(`/post/${post.id}`)} className="btn-dark flex-1 py-3 text-[11px]">
-                {language === "zh" ? "取消" : "CANCEL"}
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     );
@@ -214,13 +69,8 @@ export default function PostDetail({ posts }: PostDetailProps) {
           KHUSHAANK GUPTA
         </button>
         <div className="flex items-center gap-4">
-          {isAdmin && (
-            <button onClick={() => navigate(`/post/${post.id}?mode=edit`)} style={{ fontSize: "10px", fontFamily: "'Space Mono', monospace", color: "var(--text-grey)", background: "none", border: "none", cursor: "pointer", letterSpacing: "0.05em" }}>
-              EDIT
-            </button>
-          )}
           <button onClick={() => navigate("/")} style={{ fontSize: "12px", fontFamily: "'Space Mono', monospace", color: "var(--text-charcoal)", background: "none", border: "none", cursor: "pointer" }}>
-            {language === "zh" ? "关闭" : "Close"}
+            {language === "fr" ? "Fermer" : "Close"}
           </button>
         </div>
       </header>
@@ -250,17 +100,164 @@ export default function PostDetail({ posts }: PostDetailProps) {
         {/* Content */}
         <div 
           className="article-content"
-          style={{ fontSize: "13px", lineHeight: 1.85, color: "var(--text-charcoal)" }}
+          style={{ fontSize: "14px", lineHeight: 2.2, color: "var(--text-charcoal)", letterSpacing: "0.01em" }}
           dangerouslySetInnerHTML={{ __html: content.detailContent }}
         />
 
         {/* Back link */}
-        <div style={{ borderTop: "1px solid var(--border-light)", marginTop: "48px", paddingTop: "24px" }}>
+        <div style={{ borderTop: "1px solid var(--border-light)", marginTop: "48px", paddingTop: "24px", marginBottom: "48px" }}>
           <button onClick={() => navigate("/")} className="underline-btn">
-            {language === "zh" ? "← 返回全部文章" : "← Back to all articles"}
+            {language === "fr" ? "← Retour à tous les articles" : "← Back to all articles"}
           </button>
         </div>
+
+        {/* Comments Section */}
+        <CommentsSection postId={post.id} />
       </div>
+    </div>
+  );
+}
+
+function CommentsSection({ postId }: { postId: string | number }) {
+  const { language } = useLanguage();
+  const { user, isAuthenticated } = useAuth();
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: comments = [], isLoading } = useQuery({
+    queryKey: ["comments", String(postId)],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("comments")
+        .select("*")
+        .eq("post_id", String(postId))
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const submitComment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!comment.trim() || !user) return;
+
+    setIsSubmitting(true);
+    const { error } = await supabase.from("comments").insert([
+      {
+        post_id: String(postId),
+        user_name: user.name || user.email || "User",
+        content: comment.trim(),
+      },
+    ]);
+
+    if (error) {
+      console.error(error);
+    } else {
+      setComment("");
+      queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+    }
+    setIsSubmitting(false);
+  };
+
+  const t = {
+    fr: {
+      title: "Commentaires",
+      placeholder: "Laissez un commentaire...",
+      submit: "Envoyer",
+      submitting: "Envoi...",
+      loginToComment: "Connectez-vous pour laisser un commentaire.",
+      noComments: "Pas encore de commentaires.",
+    },
+    en: {
+      title: "Comments",
+      placeholder: "Leave a comment...",
+      submit: "Post",
+      submitting: "Posting...",
+      loginToComment: "Please log in to leave a comment.",
+      noComments: "No comments yet.",
+    },
+  };
+  const s = t[language];
+
+  return (
+    <div className="pt-8 border-t border-dashed" style={{ borderColor: "var(--border-light)" }}>
+      <h3 style={{ fontSize: "14px", fontWeight: 500, color: "var(--text-charcoal)", marginBottom: "24px", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+        {s.title} ({comments.length})
+      </h3>
+
+      {/* Comment List */}
+      <div className="space-y-6 mb-10">
+        {isLoading ? (
+          <p style={{ fontSize: "12px", color: "var(--text-grey)" }}>...</p>
+        ) : comments.length === 0 ? (
+          <p style={{ fontSize: "12px", color: "var(--text-grey)" }}>{s.noComments}</p>
+        ) : (
+          comments.map((c) => (
+            <div key={c.id} className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span style={{ fontSize: "12px", fontWeight: 500, color: "var(--text-charcoal)" }}>{c.user_name}</span>
+                <span style={{ fontSize: "10px", color: "var(--text-grey)" }}>
+                  {new Date(c.created_at).toLocaleDateString(language === "fr" ? "fr-FR" : "en-US")}
+                </span>
+              </div>
+              <div 
+                className="comment-content"
+                style={{ 
+                  fontSize: "13px", 
+                  lineHeight: 1.6, 
+                  color: "var(--text-charcoal)",
+                }}
+                dangerouslySetInnerHTML={{ __html: c.content }}
+              />
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Form */}
+      {isAuthenticated ? (
+        <form onSubmit={submitComment} className="space-y-3">
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder={s.placeholder}
+            rows={3}
+            style={{
+              width: "100%",
+              padding: "12px",
+              fontSize: "13px",
+              background: "transparent",
+              border: "1px solid var(--border-light)",
+              borderRadius: "2px",
+              outline: "none",
+              color: "var(--text-charcoal)",
+              fontFamily: "inherit",
+              resize: "none"
+            }}
+          />
+          <button
+            type="submit"
+            disabled={isSubmitting || !comment.trim()}
+            style={{
+              padding: "8px 20px",
+              fontSize: "11px",
+              fontFamily: "'Space Mono', monospace",
+              background: "var(--text-charcoal)",
+              color: "white",
+              border: "none",
+              borderRadius: "2px",
+              cursor: (isSubmitting || !comment.trim()) ? "default" : "pointer",
+              opacity: (isSubmitting || !comment.trim()) ? 0.6 : 1,
+              transition: "opacity 0.2s"
+            }}
+          >
+            {isSubmitting ? s.submitting : s.submit}
+          </button>
+        </form>
+      ) : (
+        <p style={{ fontSize: "12px", color: "var(--text-grey)", fontStyle: "italic" }}>{s.loginToComment}</p>
+      )}
     </div>
   );
 }

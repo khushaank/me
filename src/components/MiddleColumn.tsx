@@ -8,6 +8,7 @@ import { useSidebar } from "@/contexts/SidebarContext";
 import { supabase } from "@/lib/supabase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { BlogPost } from "../../contracts/blog";
+import { useSearch } from "../contexts/SearchContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +23,7 @@ export default function MiddleColumn({ posts }: MiddleColumnProps) {
   const { language } = useLanguage();
   const { isAdmin } = useAuth();
   const { leftOpen, rightOpen } = useSidebar();
+  const { searchQuery } = useSearch();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -33,10 +35,21 @@ export default function MiddleColumn({ posts }: MiddleColumnProps) {
       const { error } = await supabase.from('posts').delete().eq('id', id);
       if (error) throw error;
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['posts-v2'] }); },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['posts-v3'] }); },
   });
 
-  const sectionTitle = "MATERIAL / THOUGHTS";
+  const sectionTitle = language === "fr" ? "MATÉRIEL / PENSÉES" : "MATERIAL / THOUGHTS";
+
+  const filteredPosts = posts.filter(post => {
+    if (!searchQuery) return true;
+    const content = post[language];
+    const query = searchQuery.toLowerCase();
+    return (
+      content.title.toLowerCase().includes(query) ||
+      content.subtitle.toLowerCase().includes(query) ||
+      content.collection.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <main
@@ -59,30 +72,28 @@ export default function MiddleColumn({ posts }: MiddleColumnProps) {
         <div className="flex items-center justify-between mb-8">
           <h2
             style={{
-              fontSize: "11px",
+              fontSize: "14px",
               fontWeight: 400,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--text-grey)",
+              color: "var(--text-charcoal)",
+              letterSpacing: "0.05em",
               lineHeight: 1.4,
             }}
           >
-            {sectionTitle} ({posts.length})
+            {sectionTitle} ({filteredPosts.length})
           </h2>
-          {isAdmin && (
-            <button
-              onClick={() => navigate("/admin/new-post")}
-              className="btn-outline text-[10px] px-3 py-1.5"
-            >
-              + NEW POST
-            </button>
-          )}
         </div>
 
         {/* Posts list */}
         <div className="space-y-0">
-          {posts.map((post) => {
-            const content = post[language];
+          {filteredPosts.length === 0 ? (
+            <div className="py-20 text-center">
+              <p style={{ fontSize: "13px", color: "var(--text-grey)", fontFamily: "'Space Mono', monospace" }}>
+                {language === "fr" ? "Aucun résultat trouvé pour" : "No results found for"} "{searchQuery}"
+              </p>
+            </div>
+          ) : (
+            filteredPosts.map((post) => {
+              const content = post[language];
             return (
               <article
                 key={post.id}
@@ -172,19 +183,20 @@ export default function MiddleColumn({ posts }: MiddleColumnProps) {
                       onClick={(e) => { e.stopPropagation(); navigate(`/post/${post.id}?mode=edit`); }}
                       style={{ fontSize: "9px", color: "var(--text-grey)", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace", letterSpacing: "0.05em" }}
                     >
-                      EDIT
+                      {language === "fr" ? "MODIFIER" : "EDIT"}
                     </button>
                     <button
-                      onClick={(e) => { e.stopPropagation(); if (confirm("Delete this post?")) deletePost.mutate({ id: post.id }); }}
+                      onClick={(e) => { e.stopPropagation(); if (confirm(language === "fr" ? "Supprimer cet article ?" : "Delete this post?")) deletePost.mutate({ id: post.id }); }}
                       style={{ fontSize: "9px", color: "#E74C3C", background: "none", border: "none", cursor: "pointer", fontFamily: "'Space Mono', monospace", letterSpacing: "0.05em" }}
                     >
-                      DELETE
+                      {language === "fr" ? "SUPPRIMER" : "DELETE"}
                     </button>
                   </div>
                 )}
               </article>
             );
-          })}
+          })
+        )}
         </div>
 
         {/* Footer */}

@@ -8,6 +8,7 @@ export type AuthUser = {
   username: string;
   name: string | null;
   role: string;
+  avatarUrl: string | null;
 };
 
 export function useAuth() {
@@ -40,8 +41,9 @@ export function useAuth() {
       id: user.id,
       email: user.email || "",
       username: user.email?.split('@')[0] || "user",
-      name: user.user_metadata?.full_name || user.email,
+      name: user.user_metadata?.name || user.user_metadata?.full_name || user.email,
       role: user.app_metadata?.role || "user",
+      avatarUrl: user.user_metadata?.avatar_url || null,
     } as AuthUser;
   }, [user]);
 
