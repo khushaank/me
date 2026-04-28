@@ -1,0 +1,269 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root, [data-theme="light"] {
+    --bg-warm-white: #F4F1EC;
+    --text-charcoal: #1A1A1A;
+    --text-grey: #6B6B6B;
+    --accent-teal: #2D6A65;
+    --border-light: #E0DDD8;
+
+    --background: 40 18% 94%;
+    --foreground: 0 0% 10%;
+    --card: 40 18% 94%;
+    --card-foreground: 0 0% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 0 0% 10%;
+    --primary-foreground: 40 18% 94%;
+    --secondary: 40 10% 88%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 40 10% 88%;
+    --muted-foreground: 0 0% 42%;
+    --accent: 174 40% 29%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 10% 86%;
+    --input: 30 10% 86%;
+    --ring: 174 40% 29%;
+    --radius: 0.25rem;
+  }
+
+  [data-theme="dark"] {
+    --bg-warm-white: #0D0D0D;
+    --text-charcoal: #F0F0F0;
+    --text-grey: #888888;
+    --accent-teal: #5AAAA4;
+    --border-light: #2A2A2A;
+
+    --background: 0 0% 5%;
+    --foreground: 0 0% 94%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 94%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 94%;
+    --primary: 0 0% 94%;
+    --primary-foreground: 0 0% 5%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 94%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 53%;
+    --accent: 174 30% 52%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 174 30% 52%;
+  }
+
+  body {
+    font-family: 'Space Mono', monospace;
+    background-color: var(--bg-warm-white);
+    color: var(--text-charcoal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  ::selection {
+    background-color: var(--text-charcoal);
+    color: var(--bg-warm-white);
+  }
+
+  [data-theme="dark"] ::selection {
+    background-color: #F0F0F0;
+    color: #0D0D0D;
+  }
+
+  /* Thin scrollbar */
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-grey);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-light) transparent;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Header buttons                                                    */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .header-btn {
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    color: var(--text-charcoal);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    letter-spacing: 0.05em;
+    padding: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    border-radius: 2px;
+  }
+
+  .header-btn:hover {
+    color: var(--accent-teal);
+    opacity: 1;
+  }
+
+  /* Sidebar internal scroll - hidden scrollbar */
+  .sidebar-scroll {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Profile links */
+  .profile-link {
+    font-size: 11px;
+    color: #FFFFFF;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    line-height: 1.6;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .profile-link:hover {
+    opacity: 1;
+  }
+
+  /* Button utilities */
+  .btn-light {
+    font-family: 'Space Mono', monospace;
+    color: #1A1A1A;
+    background: #FFFFFF;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  .btn-light:hover {
+    opacity: 0.85;
+  }
+
+  .btn-dark {
+    font-family: 'Space Mono', monospace;
+    color: #FFFFFF;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: background 0.2s ease;
+  }
+
+  .btn-dark:hover {
+    background: rgba(255,255,255,0.25);
+  }
+
+  .btn-filled {
+    font-family: 'Space Mono', monospace;
+    color: var(--bg-warm-white);
+    background: var(--text-charcoal);
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: opacity 0.2s ease;
+  }
+
+  .btn-filled:hover {
+    opacity: 0.85;
+  }
+
+  .btn-outline {
+    font-family: 'Space Mono', monospace;
+    color: var(--text-charcoal);
+    background: none;
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--text-charcoal);
+  }
+
+  .underline-btn {
+    font-size: 12px;
+    color: var(--text-charcoal);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-family: 'Space Mono', monospace;
+    transition: opacity 0.2s ease;
+  }
+
+  .underline-btn:hover {
+    opacity: 0.6;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--border-light) 25%,
+      color-mix(in srgb, var(--border-light) 70%, var(--bg-warm-white)) 50%,
+      var(--border-light) 75%
+    );
+    background-size: 200% 100%;
+    border-radius: 2px;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+
+  /* Mobile responsiveness for sidebars */
+  @media (max-width: 768px) {
+    .header-btn {
+      font-size: 11px;
+      padding: 3px;
+    }
+  }
+}
